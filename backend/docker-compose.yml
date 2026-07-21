@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      target: production
+    container_name: urban-cruise-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/urban_cruise
+      - REDIS_ENABLED=true
+      - REDIS_HOST=redis
+    env_file:
+      - .env
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - urban-net
+
+  mongo:
+    image: mongo:7.0
+    container_name: urban-cruise-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - urban-net
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: urban-cruise-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - urban-net
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  urban-net:
+    driver: bridge

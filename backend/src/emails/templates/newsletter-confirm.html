@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to Urban Cruise Updates!</title>
+  <style>
+    body { margin:0; padding:0; background:#f5f5f5; font-family:'Segoe UI',Arial,sans-serif; }
+    .wrapper { max-width:600px; margin:40px auto; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.08); }
+    .header { background:linear-gradient(135deg,#dc2626,#b91c1c); padding:36px 40px; text-align:center; }
+    .header h1 { margin:0; color:#fff; font-size:26px; font-weight:700; }
+    .header p { margin:6px 0 0; color:rgba(255,255,255,.85); font-size:14px; }
+    .body { padding:36px 40px; }
+    .body h2 { margin:0 0 8px; font-size:20px; color:#111; }
+    .body p { margin:0 0 16px; color:#555; font-size:15px; line-height:1.6; }
+    .perks { background:#fafafa; border-radius:10px; padding:20px 24px; margin:20px 0; }
+    .perk { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; font-size:14px; color:#444; }
+    .perk:last-child { margin-bottom:0; }
+    .perk-icon { font-size:20px; flex-shrink:0; }
+    .footer { background:#f5f5f5; padding:20px 40px; text-align:center; font-size:12px; color:#999; }
+    .footer a { color:#dc2626; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Urban Cruise</h1>
+      <p>Lucknow's Most Trusted Travel Agency</p>
+    </div>
+    <div class="body">
+      <h2>Welcome aboard, {{name}}! 🎉</h2>
+      <p>
+        You've successfully subscribed to Urban Cruise travel updates. Here's what you can
+        expect in your inbox:
+      </p>
+      <div class="perks">
+        <div class="perk"><span class="perk-icon">✈️</span><span>Exclusive tour package deals and early-bird offers</span></div>
+        <div class="perk"><span class="perk-icon">🗺️</span><span>Destination guides and travel tips for India</span></div>
+        <div class="perk"><span class="perk-icon">📅</span><span>Seasonal travel alerts and festival package updates</span></div>
+        <div class="perk"><span class="perk-icon">💰</span><span>Special discount coupon codes for subscribers</span></div>
+      </div>
+      <p>Happy travelling! ✨</p>
+    </div>
+    <div class="footer">
+      <p>© Urban Cruise, Gomti Nagar, Lucknow, UP 226010 | <a href="https://www.urbancruiselko.com">Website</a></p>
+      <p>Don't want these emails? <a href="https://www.urbancruiselko.com/unsubscribe?email={{email}}">Unsubscribe</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,426 @@
+type Widen<T> = T extends string
+  ? string
+  : T extends readonly (infer U)[]
+    ? readonly Widen<U>[]
+    : T extends object
+      ? { -readonly [K in keyof T]: Widen<T[K]> }
+      : T;
+
+const enRaw = {
+  meta: {
+    title: "Urban Cruise | Travel Agent Lucknow | Tour Packages & Car Rental",
+    description:
+      "Urban Cruise — Lucknow's trusted travel agency. Varanasi, Ayodhya, Prayagraj & pilgrimage tours. Clean cars, on-time service, affordable rates. Open 24 hours.",
+  },
+  nav: {
+    home: "Home",
+    packages: "Tour Packages",
+    destinations: "Destinations",
+    about: "About Us",
+    gallery: "Gallery",
+    blog: "Blog",
+    contact: "Contact",
+    planner: "Trip Planner",
+    trackInquiry: "Track Inquiry",
+    bookNow: "Book Now",
+    getQuote: "Get a Free Quote",
+  },
+  common: {
+    explorePackages: "Explore Packages",
+    planYourTrip: "Plan Your Trip",
+    contactUs: "Contact Us",
+    bookNow: "Book Now",
+    viewAll: "View All",
+    viewDetails: "View Details",
+    readMore: "Read More",
+    learnMore: "Learn More",
+    perPerson: "per person",
+    days: "Days",
+    nights: "Nights",
+    rating: "Rating",
+    reviews: "reviews",
+    off: "OFF",
+    enquireWhatsapp: "Enquire on WhatsApp",
+    callNow: "Call Now",
+    emailUs: "Email Us",
+    loading: "Loading...",
+    minRead: "min read",
+  },
+  hero: {
+    badge: "Lucknow's Most Trusted Travel Agency",
+    title: "Your Perfect Journey",
+    titleHighlight: "Starts Here",
+    subtitle:
+      "Pilgrimage tours, car rental & outstation trips from Lucknow — clean vehicles, knowledgeable drivers and 24/7 service at affordable rates.",
+    searchLabel: "Where do you want to go?",
+    searchPlaceholder: "Search e.g. Varanasi, Ayodhya, Prayagraj, Shimla...",
+    searchButton: "Search",
+    exploreBtn: "Explore Packages",
+    planTripBtn: "Plan Your Trip",
+    contactBtn: "Contact Us",
+    stat1Label: "Happy Travelers",
+    stat2Label: "Destinations",
+    stat3Label: "Tour Packages",
+    stat4Label: "Avg. Rating",
+  },
+  whyChooseUs: {
+    title: "Why Travel With Us",
+    subtitle:
+      "We go beyond bookings — every journey is backed by expertise, care and a promise of quality.",
+    items: [
+      {
+        title: "Best Price Guarantee",
+        description:
+          "Get the most competitive prices on every package with zero hidden charges.",
+      },
+      {
+        title: "Trusted Travel Experts",
+        description:
+          "Our team of seasoned travel consultants designs every itinerary with care.",
+      },
+      {
+        title: "Verified Hotels",
+        description:
+          "Stay only at hand-picked, quality-verified hotels and resorts across India.",
+      },
+      {
+        title: "24/7 Customer Support",
+        description:
+          "Round-the-clock assistance before, during and after your trip — always reachable.",
+      },
+      {
+        title: "Secure Payments",
+        description:
+          "Bank-grade encrypted payment gateways keep your transactions completely safe.",
+      },
+      {
+        title: "Personalized Packages",
+        description:
+          "Every trip can be tailored to your budget, pace, and travel style.",
+      },
+    ],
+  },
+  featuredPackages: {
+    title: "Featured Packages",
+    subtitle: "Hand-picked holiday packages loved by thousands of travelers",
+    badge: "Best Seller",
+    featuredBadge: "Featured",
+  },
+  destinations: {
+    title: "Popular Destinations",
+    subtitle: "From sun-soaked beaches to snow-capped mountains, find your perfect escape",
+    domestic: "Domestic",
+    packagesAvailable: "packages available",
+    startingFrom: "Starting from",
+    explore: "Explore",
+  },
+  calculator: {
+    title: "Tour Cost Calculator",
+    subtitle: "Get an instant estimate for your dream trip — adjust and see live pricing",
+    destination: "Destination",
+    selectDestination: "Select destination",
+    travelers: "Number of Travelers",
+    days: "Number of Days",
+    hotelCategory: "Hotel Category",
+    hotelBudget: "Budget (3 Star)",
+    hotelStandard: "Standard (4 Star)",
+    hotelLuxury: "Luxury (5 Star)",
+    flightsIncluded: "Include Flights",
+    mealPlan: "Meal Plan",
+    mealNone: "No Meals",
+    mealBreakfast: "Breakfast Only",
+    mealHalfBoard: "Half Board",
+    mealFullBoard: "Full Board",
+    transportation: "Transportation",
+    transportNone: "None / Self Travel",
+    transportShared: "Shared Coach",
+    transportPrivate: "Private Cab",
+    estimatedCost: "Estimated Total Cost",
+    perPersonCost: "Approx. per person",
+    getQuote: "Get Detailed Quote",
+    priceNote: "*This is an indicative estimate. Final pricing may vary based on availability and season.",
+  },
+  stats: {
+    title: "Numbers That Speak For Us",
+    subtitle: "Numbers that prove our commitment to quality service",
+    happyCustomers: "Happy Customers",
+    toursCompleted: "Tours Completed",
+    destinationsCovered: "Destinations Covered",
+    yearsOfExperience: "Years of Experience",
+  },
+  analytics: {
+    title: "Travel Analytics",
+    subtitle: "Real insights from real travelers, updated every season",
+    mostBooked: "Most Booked Destinations",
+    mostBookedDesc: "Top destinations by booking volume this year",
+    seasonalTrends: "Seasonal Travel Trends",
+    seasonalTrendsDesc: "Monthly booking trends across the year",
+    satisfaction: "Customer Satisfaction",
+    satisfactionDesc: "Based on post-trip feedback surveys",
+    bookings: "Bookings",
+  },
+  testimonials: {
+    title: "What Our Travelers Say",
+    subtitle: "Real stories from travelers who explored India with us",
+    watchVideo: "Watch Story",
+    verifiedTraveler: "Verified Traveler",
+  },
+  blog: {
+    title: "Travel Stories & Guides",
+    subtitle: "Tips, inspiration and insider guides for your next adventure",
+    viewAllPosts: "View All Articles",
+    by: "By",
+  },
+  gallery: {
+    title: "Travel Gallery",
+    subtitle: "Moments captured by our travelers across India",
+    all: "All",
+    domestic: "Domestic Tours",
+    adventure: "Adventure Trips",
+    memories: "Customer Memories",
+    viewGallery: "View Full Gallery",
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    subtitle: "Everything you need to know before you book",
+  },
+  contactCta: {
+    title: "Ready to Start Your Journey?",
+    subtitle:
+      "Our travel experts are just a message away. Reach out and let's plan your perfect getaway.",
+    whatsapp: "Chat on WhatsApp",
+    call: "Call Now",
+    email: "Email Us",
+  },
+  footer: {
+    description:
+      "Lucknow's trusted travel agency — pilgrimage tours, car rental & outstation trips. Professional team, clean cars, on-time service. Open 24 hours.",
+    quickLinks: "Quick Links",
+    topDestinations: "Top Destinations",
+    contactInfo: "Contact Info",
+    newsletter: "Subscribe to Newsletter",
+    newsletterDesc: "Get exclusive deals and travel inspiration in your inbox.",
+    newsletterPlaceholder: "Enter your email",
+    subscribe: "Subscribe",
+    address: "Vineet Khand 6, Gomti Nagar, Lucknow, UP 226010",
+    rights: "All rights reserved.",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    sitemap: "Sitemap",
+  },
+  whatsapp: {
+    floatingLabel: "Chat with us",
+    defaultMessage: "Hello, I am interested in your tour packages. Please share complete details.",
+  },
+} as const;
+
+export type Dictionary = Widen<typeof enRaw>;
+
+export const en: Dictionary = enRaw;
+
+export const hi: Dictionary = {
+  meta: {
+    title: "अर्बन क्रूज़ | ट्रैवल एजेंट लखनऊ | टूर पैकेज एवं कार किराया",
+    description:
+      "अर्बन क्रूज़ — लखनऊ की भरोसेमंद ट्रैवल एजेंसी। वाराणसी, अयोध्या, प्रयागराज तीर्थ यात्रा। साफ़ गाड़ियाँ, समय पर सेवा, किफ़ायती दाम। 24 घंटे उपलब्ध।",
+  },
+  nav: {
+    home: "होम",
+    packages: "टूर पैकेज",
+    destinations: "गंतव्य",
+    about: "हमारे बारे में",
+    gallery: "गैलरी",
+    blog: "ब्लॉग",
+    contact: "संपर्क करें",
+    planner: "ट्रिप प्लानर",
+    trackInquiry: "पूछताछ ट्रैक करें",
+    bookNow: "अभी बुक करें",
+    getQuote: "मुफ़्त कोटेशन पाएं",
+  },
+  common: {
+    explorePackages: "पैकेज देखें",
+    planYourTrip: "अपनी यात्रा प्लान करें",
+    contactUs: "संपर्क करें",
+    bookNow: "अभी बुक करें",
+    viewAll: "सभी देखें",
+    viewDetails: "विवरण देखें",
+    readMore: "और पढ़ें",
+    learnMore: "और जानें",
+    perPerson: "प्रति व्यक्ति",
+    days: "दिन",
+    nights: "रातें",
+    rating: "रेटिंग",
+    reviews: "समीक्षाएं",
+    off: "छूट",
+    enquireWhatsapp: "व्हाट्सएप पर पूछताछ करें",
+    callNow: "अभी कॉल करें",
+    emailUs: "ईमेल करें",
+    loading: "लोड हो रहा है...",
+    minRead: "मिनट पढ़ें",
+  },
+  hero: {
+    badge: "भारत का सबसे भरोसेमंद यात्रा साथी",
+    title: "अपनी अगली",
+    titleHighlight: "यादगार यात्रा खोजें",
+    subtitle:
+      "भारत भर में हस्तनिर्मित टूर — प्रीमियम होटल, सहज लॉजिस्टिक्स और 24/7 सहायता ताकि आप बस यात्रा का आनंद ले सकें।",
+    searchLabel: "आप कहाँ जाना चाहते हैं?",
+    searchPlaceholder: "गंतव्य खोजें जैसे गोवा, केरल, कश्मीर...",
+    searchButton: "खोजें",
+    exploreBtn: "पैकेज देखें",
+    planTripBtn: "अपनी यात्रा प्लान करें",
+    contactBtn: "संपर्क करें",
+    stat1Label: "खुश यात्री",
+    stat2Label: "गंतव्य",
+    stat3Label: "टूर पैकेज",
+    stat4Label: "औसत रेटिंग",
+  },
+  whyChooseUs: {
+    title: "हमारे साथ यात्रा क्यों करें",
+    subtitle:
+      "हम सिर्फ बुकिंग से आगे बढ़ते हैं — हर यात्रा विशेषज्ञता, देखभाल और गुणवत्ता के वादे के साथ आती है।",
+    items: [
+      {
+        title: "सर्वोत्तम मूल्य की गारंटी",
+        description:
+          "बिना किसी छिपे शुल्क के हर पैकेज पर सबसे प्रतिस्पर्धी कीमतें पाएं।",
+      },
+      {
+        title: "विश्वसनीय यात्रा विशेषज्ञ",
+        description:
+          "हमारी अनुभवी यात्रा सलाहकार टीम हर यात्रा कार्यक्रम को सावधानी से डिज़ाइन करती है।",
+      },
+      {
+        title: "सत्यापित होटल",
+        description:
+          "भारत भर में केवल हाथ से चुने गए, गुणवत्ता-सत्यापित होटलों और रिसॉर्ट्स में रहें।",
+      },
+      {
+        title: "24/7 ग्राहक सहायता",
+        description:
+          "आपकी यात्रा से पहले, दौरान और बाद में चौबीसों घंटे सहायता - हमेशा उपलब्ध।",
+      },
+      {
+        title: "सुरक्षित भुगतान",
+        description: "बैंक-ग्रेड एन्क्रिप्टेड भुगतान गेटवे आपके लेनदेन को पूरी तरह सुरक्षित रखते हैं।",
+      },
+      {
+        title: "व्यक्तिगत पैकेज",
+        description: "हर यात्रा को आपके बजट, गति और यात्रा शैली के अनुसार बनाया जा सकता है।",
+      },
+    ],
+  },
+  featuredPackages: {
+    title: "विशेष पैकेज",
+    subtitle: "हजारों यात्रियों द्वारा पसंद किए गए चुनिंदा हॉलिडे पैकेज",
+    badge: "बेस्ट सेलर",
+    featuredBadge: "विशेष",
+  },
+  destinations: {
+    title: "लोकप्रिय गंतव्य",
+    subtitle: "धूप से सराबोर समुद्र तटों से लेकर बर्फ से ढके पहाड़ों तक, अपना सही पलायन खोजें",
+    domestic: "घरेलू",
+    packagesAvailable: "पैकेज उपलब्ध",
+    startingFrom: "शुरुआती कीमत",
+    explore: "एक्सप्लोर करें",
+  },
+  calculator: {
+    title: "टूर लागत कैलकुलेटर",
+    subtitle: "अपनी सपनों की यात्रा के लिए तुरंत अनुमान पाएं - समायोजित करें और लाइव कीमत देखें",
+    destination: "गंतव्य",
+    selectDestination: "गंतव्य चुनें",
+    travelers: "यात्रियों की संख्या",
+    days: "दिनों की संख्या",
+    hotelCategory: "होटल श्रेणी",
+    hotelBudget: "बजट (3 स्टार)",
+    hotelStandard: "स्टैंडर्ड (4 स्टार)",
+    hotelLuxury: "लक्ज़री (5 स्टार)",
+    flightsIncluded: "उड़ानें शामिल करें",
+    mealPlan: "भोजन योजना",
+    mealNone: "कोई भोजन नहीं",
+    mealBreakfast: "केवल नाश्ता",
+    mealHalfBoard: "हाफ बोर्ड",
+    mealFullBoard: "फुल बोर्ड",
+    transportation: "परिवहन",
+    transportNone: "कोई नहीं / स्वयं यात्रा",
+    transportShared: "शेयर्ड कोच",
+    transportPrivate: "प्राइवेट कैब",
+    estimatedCost: "अनुमानित कुल लागत",
+    perPersonCost: "लगभग प्रति व्यक्ति",
+    getQuote: "विस्तृत कोटेशन पाएं",
+    priceNote: "*यह एक संकेतात्मक अनुमान है। अंतिम मूल्य उपलब्धता और मौसम के अनुसार बदल सकता है।",
+  },
+  stats: {
+    title: "आंकड़े जो हमारे बारे में बताते हैं",
+    subtitle: "एक दशक से अधिक समय से यादगार यात्राएं बना रहे हैं",
+    happyCustomers: "खुश ग्राहक",
+    toursCompleted: "पूर्ण यात्राएं",
+    destinationsCovered: "कवर किए गए गंतव्य",
+    yearsOfExperience: "वर्षों का अनुभव",
+  },
+  analytics: {
+    title: "यात्रा विश्लेषण",
+    subtitle: "वास्तविक यात्रियों से वास्तविक जानकारी, हर मौसम में अपडेट",
+    mostBooked: "सबसे ज़्यादा बुक किए गए गंतव्य",
+    mostBookedDesc: "इस वर्ष बुकिंग वॉल्यूम के आधार पर शीर्ष गंतव्य",
+    seasonalTrends: "मौसमी यात्रा रुझान",
+    seasonalTrendsDesc: "पूरे वर्ष मासिक बुकिंग रुझान",
+    satisfaction: "ग्राहक संतुष्टि",
+    satisfactionDesc: "यात्रा के बाद के फीडबैक सर्वेक्षण के आधार पर",
+    bookings: "बुकिंग",
+  },
+  testimonials: {
+    title: "हमारे यात्री क्या कहते हैं",
+    subtitle: "उन यात्रियों की वास्तविक कहानियां जिन्होंने हमारे साथ भारत का अन्वेषण किया",
+    watchVideo: "कहानी देखें",
+    verifiedTraveler: "सत्यापित यात्री",
+  },
+  blog: {
+    title: "यात्रा कहानियां और गाइड",
+    subtitle: "आपकी अगली यात्रा के लिए टिप्स, प्रेरणा और इनसाइडर गाइड",
+    viewAllPosts: "सभी लेख देखें",
+    by: "द्वारा",
+  },
+  gallery: {
+    title: "ट्रैवल गैलरी",
+    subtitle: "भारत भर में हमारे यात्रियों द्वारा कैद किए गए पल",
+    all: "सभी",
+    domestic: "घरेलू टूर",
+    adventure: "एडवेंचर ट्रिप्स",
+    memories: "ग्राहकों की यादें",
+    viewGallery: "पूरी गैलरी देखें",
+  },
+  faq: {
+    title: "अक्सर पूछे जाने वाले प्रश्न",
+    subtitle: "बुकिंग से पहले आपको जो कुछ भी जानना चाहिए",
+  },
+  contactCta: {
+    title: "अपनी यात्रा शुरू करने के लिए तैयार हैं?",
+    subtitle: "हमारे यात्रा विशेषज्ञ बस एक संदेश दूर हैं। संपर्क करें और अपनी सही छुट्टी की योजना बनाएं।",
+    whatsapp: "व्हाट्सएप पर चैट करें",
+    call: "अभी कॉल करें",
+    email: "ईमेल करें",
+  },
+  footer: {
+    description:
+      "15 वर्षों से अधिक समय से भारत भर में यादगार यात्रा अनुभव बना रहे हैं। आपकी यात्रा, हमारा जुनून।",
+    quickLinks: "त्वरित लिंक",
+    topDestinations: "शीर्ष गंतव्य",
+    contactInfo: "संपर्क जानकारी",
+    newsletter: "न्यूज़लेटर सदस्यता लें",
+    newsletterDesc: "अपने इनबॉक्स में विशेष ऑफ़र और यात्रा प्रेरणा पाएं।",
+    newsletterPlaceholder: "अपना ईमेल दर्ज करें",
+    subscribe: "सदस्यता लें",
+    address: "विनीत खण्ड 6, गोमती नगर, लखनऊ, उ.प्र. 226010",
+    rights: "सर्वाधिकार सुरक्षित।",
+    privacyPolicy: "गोपनीयता नीति",
+    termsOfService: "सेवा की शर्तें",
+    sitemap: "साइटमैप",
+  },
+  whatsapp: {
+    floatingLabel: "हमसे चैट करें",
+    defaultMessage: "नमस्ते, मुझे आपके टूर पैकेज में रुचि है। कृपया पूरी जानकारी साझा करें।",
+  },
+};
+
+export const translations = { en, hi };

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed — Urban Cruise</title>
+  <style>
+    body { margin: 0; padding: 0; background: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif; }
+    .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+    .header { background: linear-gradient(135deg, #dc2626, #b91c1c); padding: 36px 40px; text-align: center; }
+    .header h1 { margin: 0; color: #fff; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+    .header p { margin: 6px 0 0; color: rgba(255,255,255,.85); font-size: 14px; }
+    .body { padding: 36px 40px; }
+    .body h2 { margin: 0 0 8px; font-size: 20px; color: #111; }
+    .body p { margin: 0 0 16px; color: #555; font-size: 15px; line-height: 1.6; }
+    .card { background: #fafafa; border: 1px solid #eee; border-radius: 10px; padding: 24px; margin: 24px 0; }
+    .card-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+    .card-row:last-child { border-bottom: none; }
+    .card-row .label { color: #888; }
+    .card-row .value { color: #111; font-weight: 600; }
+    .booking-id { font-size: 28px; font-weight: 800; color: #dc2626; text-align: center; letter-spacing: 2px; margin: 8px 0; }
+    .btn { display: block; width: fit-content; margin: 28px auto 0; background: linear-gradient(135deg, #dc2626, #b91c1c); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 50px; font-size: 15px; font-weight: 700; text-align: center; }
+    .footer { background: #f5f5f5; padding: 24px 40px; text-align: center; font-size: 13px; color: #999; }
+    .footer a { color: #dc2626; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Urban Cruise</h1>
+      <p>Lucknow's Most Trusted Travel Agency</p>
+    </div>
+    <div class="body">
+      <h2>Booking Confirmed! 🎉</h2>
+      <p>Hi <strong>{{customerName}}</strong>,</p>
+      <p>
+        Your tour booking has been confirmed. Our team will contact you within 24 hours to
+        finalise the itinerary and payment details.
+      </p>
+
+      <p style="text-align:center; margin-bottom:4px; color:#888; font-size:13px;">Your Booking ID</p>
+      <div class="booking-id">{{bookingId}}</div>
+
+      <div class="card">
+        <div class="card-row">
+          <span class="label">Package</span>
+          <span class="value">{{packageTitle}}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">Travel Date</span>
+          <span class="value">{{travelDate}}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">Travelers</span>
+          <span class="value">{{travelers}}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">Total Amount</span>
+          <span class="value" style="color:#dc2626; font-size:16px;">{{totalAmount}}</span>
+        </div>
+      </div>
+
+      <p>Need help? Call or WhatsApp us at <strong>{{phone}}</strong> — we're available 7 days a week.</p>
+    </div>
+    <div class="footer">
+      <p>© Urban Cruise, Vineet Khand 6, Gomti Nagar, Lucknow, UP 226010</p>
+      <p><a href="https://www.urbancruiselko.com">www.urbancruiselko.com</a></p>
+    </div>
+  </div>
+</body>
+</html>
