@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Package } from "lucide-react";
-import { destinations, getDestinationBySlug } from "@/lib/data/destinations";
-import { packages } from "@/lib/data/packages";
+import { fetchDestinationBySlug, fetchPackages } from "@/lib/api";
 import { PackageCard } from "@/components/shared/package-card";
 import { formatINR } from "@/lib/utils";
 
@@ -12,13 +11,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return destinations.map((d) => ({ slug: d.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const dest = getDestinationBySlug(slug);
+  const dest = await fetchDestinationBySlug(slug);
   if (!dest) return {};
   return {
     title: dest.name,
@@ -28,13 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DestinationPage({ params }: Props) {
   const { slug } = await params;
-  const dest = getDestinationBySlug(slug);
+  const dest = await fetchDestinationBySlug(slug);
   if (!dest) notFound();
 
-  const destPackages = packages.filter((p) =>
-    p.destination.toLowerCase().includes(dest.name.toLowerCase()) ||
-    dest.name.toLowerCase().includes(p.destination.toLowerCase().split(",")[0])
-  );
+  const matchedPackages = await fetchPackages({ destination: dest.name });
+  const hasMatches = matchedPackages.length > 0;
+  const destPackages = hasMatches ? matchedPackages : await fetchPackages();
 
   return (
     <div className="min-h-screen">
@@ -78,10 +72,10 @@ export default async function DestinationPage({ params }: Props) {
       {/* Packages */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold">
-          {destPackages.length > 0 ? `Tours to ${dest.name}` : "All Available Tours"}
+          {hasMatches ? `Tours to ${dest.name}` : "All Available Tours"}
         </h2>
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {(destPackages.length > 0 ? destPackages : packages).map((pkg, i) => (
+          {destPackages.map((pkg, i) => (
             <PackageCard key={pkg.id} pkg={pkg} index={i} />
           ))}
         </div>

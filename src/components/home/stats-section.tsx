@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { Users, Plane, Globe2, Award } from "lucide-react";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
-import { siteStats } from "@/lib/data/analytics";
 import { useTranslation } from "@/hooks/use-translation";
+import type { SiteStats } from "@/types";
 
-export function StatsSection() {
+export function StatsSection({ siteStats }: { siteStats: SiteStats }) {
   const { t } = useTranslation();
 
   const stats = [

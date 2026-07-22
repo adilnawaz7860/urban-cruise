@@ -1,30 +1,39 @@
-import type { TourPackage, BlogPost, GalleryImage } from "@/types";
-import { packages as staticPackages } from "./data/packages";
-import { blogs as staticBlogs } from "./data/blogs";
-import { galleryImages as staticGallery } from "./data/gallery";
+import type {
+  TourPackage,
+  BlogPost,
+  GalleryImage,
+  Destination,
+  Testimonial,
+  FaqItem,
+  SiteStats,
+} from "@/types";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api/v1";
-const DEFAULT_IMG = "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=1200&auto=format&fit=crop";
-const DEFAULT_BLOG_IMG = "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?q=80&w=1000&auto=format&fit=crop";
-
-// ─── HTTP helpers ─────────────────────────────────────────────────────────────
+function apiUrl(path: string) {
+  if (typeof window !== "undefined") return path;
+  const base = process.env.SITE_URL || "http://localhost:3000";
+  return `${base}${path}`;
+}
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T | null> {
   try {
-    const res = await fetch(`${BASE}${path}`, {
+    const res = await fetch(apiUrl(path), {
       next: { revalidate: 60 },
       ...init,
     });
     if (!res.ok) return null;
-    return res.json() as Promise<T>;
+    const json = await res.json();
+    return json.data as T;
   } catch {
     return null;
   }
 }
 
-export async function apiPost<T = unknown>(path: string, body: unknown): Promise<{ ok: boolean; data?: T; message?: string }> {
+export async function apiPost<T = unknown>(
+  path: string,
+  body: unknown
+): Promise<{ ok: boolean; data?: T; message?: string }> {
   try {
-    const res = await fetch(`${BASE}${path}`, {
+    const res = await fetch(apiUrl(path), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -41,25 +50,22 @@ export async function apiPost<T = unknown>(path: string, body: unknown): Promise
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function adaptPackage(p: any): TourPackage {
-  const coverUrl = p.coverImage?.url || DEFAULT_IMG;
-  const originalPrice = Number(p.price) || 0;
-  const discountPrice = Number(p.discountPrice) || originalPrice;
   return {
     id: String(p._id || p.id),
     slug: String(p.slug),
     title: String(p.title),
-    titleHi: String(p.title),
+    titleHi: String(p.titleHi || p.title),
     destination: String(p.destination),
-    destinationHi: String(p.destination),
-    country: "India",
+    destinationHi: String(p.destinationHi || p.destination),
+    country: String(p.country || "India"),
     durationDays: Number(p.durationDays) || 1,
     durationNights: Number(p.durationNights) || 1,
     rating: Number(p.rating) || 4.8,
     reviewCount: Number(p.reviewCount) || 0,
-    price: discountPrice,
-    originalPrice,
+    price: p.discountPrice > 0 ? Number(p.discountPrice) : Number(p.price),
+    originalPrice: Number(p.price) || 0,
     discountPercent: Number(p.discountPercent) || 0,
-    image: coverUrl,
+    image: p.coverImage?.url || "",
     categories: Array.isArray(p.categories) ? p.categories : [],
     featured: Boolean(p.featured),
     bestSeller: Boolean(p.bestSeller),
@@ -68,19 +74,18 @@ function adaptPackage(p: any): TourPackage {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function adaptBlog(b: any): BlogPost {
-  const image = b.featuredImage?.url || b.coverImage?.url || DEFAULT_BLOG_IMG;
   return {
     id: String(b._id || b.id),
     slug: String(b.slug),
     title: String(b.title),
-    titleHi: String(b.title),
-    excerpt: String(b.excerpt || b.shortDescription || ""),
-    excerptHi: String(b.excerpt || b.shortDescription || ""),
-    image,
-    category: String(b.category || "Travel"),
-    categoryHi: String(b.category || "Travel"),
+    titleHi: String(b.titleHi || b.title),
+    excerpt: String(b.excerpt || ""),
+    excerptHi: String(b.excerptHi || b.excerpt || ""),
+    image: b.featuredImage?.url || "",
+    category: String(b.category || "Travel Guide"),
+    categoryHi: String(b.categoryHi || b.category || ""),
     date: String(b.publishedAt || b.createdAt || new Date().toISOString()),
-    author: String(b.authorName || b.author || "Urban Cruise"),
+    author: String(b.author?.name || "Urban Cruise"),
     readTime: Number(b.readTime) || 5,
   };
 }
@@ -98,70 +103,130 @@ function adaptGallery(g: any): GalleryImage {
     id: String(g._id || g.id),
     src: String(g.url || ""),
     alt: String(g.alt || g.caption || "Gallery photo"),
-    altHi: String(g.alt || g.caption || ""),
+    altHi: String(g.altHi || g.alt || ""),
     category: categoryMap[g.category] || "domestic",
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function adaptDestination(d: any): Destination {
+  return {
+    id: String(d._id || d.id),
+    slug: String(d.slug),
+    name: String(d.name),
+    nameHi: String(d.nameHi || d.name),
+    country: String(d.country || "India"),
+    image: d.image?.url || "",
+    packageCount: Number(d.packageCount) || 0,
+    startingPrice: Number(d.startingPrice) || 0,
+    description: String(d.description || ""),
+    descriptionHi: String(d.descriptionHi || d.description || ""),
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function adaptTestimonial(t: any): Testimonial {
+  return {
+    id: String(t._id || t.id),
+    name: String(t.name),
+    location: String(t.location || ""),
+    locationHi: String(t.locationHi || t.location || ""),
+    avatar: t.avatar?.url || "",
+    rating: Number(t.rating) || 5,
+    text: String(t.text),
+    textHi: String(t.textHi || t.text),
+    tripName: String(t.tripName || ""),
+    tripNameHi: String(t.tripNameHi || t.tripName || ""),
+    isVideo: Boolean(t.isVideo),
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function adaptFaq(f: any): FaqItem {
+  return {
+    question: String(f.question),
+    questionHi: String(f.questionHi || f.question),
+    answer: String(f.answer),
+    answerHi: String(f.answerHi || f.answer),
   };
 }
 
 // ─── Packages ─────────────────────────────────────────────────────────────────
 
 export async function fetchFeaturedPackages(): Promise<TourPackage[]> {
-  const res = await apiFetch<{ success: boolean; data: unknown[] }>("/packages/featured?limit=8");
-  if (res?.success && Array.isArray(res.data) && res.data.length) {
-    return res.data.map(adaptPackage);
-  }
-  return staticPackages.filter((p) => p.featured).slice(0, 8);
+  const res = await apiFetch<unknown[]>("/api/packages/featured?limit=8");
+  return (res || []).map(adaptPackage);
 }
 
 export async function fetchPackages(params?: Record<string, string>): Promise<TourPackage[]> {
   const qs = params ? "?" + new URLSearchParams(params).toString() : "?limit=100";
-  const res = await apiFetch<{ success: boolean; data: unknown[] }>(`/packages${qs}`);
-  if (res?.success && Array.isArray(res.data) && res.data.length) {
-    return res.data.map(adaptPackage);
-  }
-  return staticPackages;
+  const res = await apiFetch<unknown[]>(`/api/packages${qs}`);
+  return (res || []).map(adaptPackage);
 }
 
 export async function fetchPackageBySlug(slug: string): Promise<TourPackage | null> {
-  const res = await apiFetch<{ success: boolean; data: unknown }>(`/packages/${slug}`);
-  if (res?.success && res.data) return adaptPackage(res.data);
-  return staticPackages.find((p) => p.slug === slug) ?? null;
+  const res = await apiFetch<unknown>(`/api/packages/${slug}`);
+  return res ? adaptPackage(res) : null;
 }
 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 
 export async function fetchBlogs(): Promise<BlogPost[]> {
-  const res = await apiFetch<{ success: boolean; data: unknown[] }>("/blogs?limit=50");
-  if (res?.success && Array.isArray(res.data) && res.data.length) {
-    return res.data.map(adaptBlog);
-  }
-  return staticBlogs;
+  const res = await apiFetch<unknown[]>("/api/blogs?limit=50");
+  return (res || []).map(adaptBlog);
 }
 
-export async function fetchBlogBySlug(slug: string): Promise<{ blog: BlogPost; related: BlogPost[] } | null> {
-  const res = await apiFetch<{ success: boolean; data: { blog: unknown; related: unknown[] } }>(`/blogs/${slug}`);
-  if (res?.success && res.data?.blog) {
-    return {
-      blog: adaptBlog(res.data.blog),
-      related: (res.data.related || []).map(adaptBlog),
-    };
-  }
-  const staticPost = staticBlogs.find((b) => b.slug === slug);
-  if (!staticPost) return null;
+export async function fetchBlogBySlug(
+  slug: string
+): Promise<{ blog: BlogPost; related: BlogPost[] } | null> {
+  const res = await apiFetch<{ blog: unknown; related: unknown[] }>(`/api/blogs/${slug}`);
+  if (!res?.blog) return null;
   return {
-    blog: staticPost,
-    related: staticBlogs.filter((b) => b.slug !== slug).slice(0, 2),
+    blog: adaptBlog(res.blog),
+    related: (res.related || []).map(adaptBlog),
   };
 }
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
 export async function fetchGallery(): Promise<GalleryImage[]> {
-  const res = await apiFetch<{ success: boolean; data: unknown[] }>("/gallery?limit=50&isActive=true");
-  if (res?.success && Array.isArray(res.data) && res.data.length) {
-    return res.data.map(adaptGallery);
-  }
-  return staticGallery;
+  const res = await apiFetch<unknown[]>("/api/gallery?limit=50");
+  return (res || []).map(adaptGallery);
+}
+
+// ─── Destinations ─────────────────────────────────────────────────────────────
+
+export async function fetchDestinations(): Promise<Destination[]> {
+  const res = await apiFetch<unknown[]>("/api/destinations");
+  return (res || []).map(adaptDestination);
+}
+
+export async function fetchDestinationBySlug(slug: string): Promise<Destination | null> {
+  const res = await apiFetch<unknown>(`/api/destinations/${slug}`);
+  return res ? adaptDestination(res) : null;
+}
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+
+export async function fetchTestimonials(): Promise<Testimonial[]> {
+  const res = await apiFetch<unknown[]>("/api/testimonials");
+  return (res || []).map(adaptTestimonial);
+}
+
+// ─── FAQs ──────────────────────────────────────────────────────────────────────
+
+export async function fetchFaqs(): Promise<FaqItem[]> {
+  const res = await apiFetch<unknown[]>("/api/faqs");
+  return (res || []).map(adaptFaq);
+}
+
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+export async function fetchSiteStats(): Promise<SiteStats> {
+  const res = await apiFetch<{ stats?: SiteStats }>("/api/settings");
+  return (
+    res?.stats || { happyCustomers: 0, toursCompleted: 0, destinationsCovered: 0, yearsOfExperience: 0 }
+  );
 }
 
 // ─── Enquiry / Contact ────────────────────────────────────────────────────────
@@ -175,7 +240,7 @@ export async function submitEnquiry(data: {
   travelers?: number;
   message?: string;
 }) {
-  return apiPost("/enquiries", data);
+  return apiPost("/api/enquiries", data);
 }
 
 export async function submitContact(data: {
@@ -184,27 +249,11 @@ export async function submitContact(data: {
   phone?: string;
   message: string;
 }) {
-  return apiPost("/enquiries/contact", data);
+  return apiPost("/api/contact", data);
 }
 
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 
 export async function subscribeNewsletter(email: string, name?: string) {
-  return apiPost("/newsletter/subscribe", { email, name });
-}
-
-// ─── Booking track ────────────────────────────────────────────────────────────
-
-export async function trackBooking(bookingId: string) {
-  return apiFetch<{
-    success: boolean;
-    data: {
-      bookingId: string;
-      customerName: string;
-      status: string;
-      travelDate: string;
-      destination: string;
-      packageTitle: string;
-    } | null;
-  }>(`/bookings/track/${bookingId}`);
+  return apiPost("/api/newsletter/subscribe", { email, name });
 }

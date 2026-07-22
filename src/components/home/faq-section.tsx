@@ -7,11 +7,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { faqs } from "@/lib/data/faqs";
 import { useTranslation } from "@/hooks/use-translation";
 import { pick } from "@/lib/utils";
+import type { FaqItem } from "@/types";
 
-export function FaqSection() {
+export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
   const { t, locale } = useTranslation();
 
   return (

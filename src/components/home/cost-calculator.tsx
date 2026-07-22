@@ -22,7 +22,6 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { destinations } from "@/lib/data/destinations";
 import {
   calculateTripCost,
   type HotelCategory,
@@ -32,8 +31,14 @@ import {
 import { useTranslation } from "@/hooks/use-translation";
 import { pick, formatINR, cn } from "@/lib/utils";
 import { buildWhatsappLink } from "@/lib/config";
+import type { Destination } from "@/types";
 
-export function CostCalculator() {
+export function CostCalculator({ destinations }: { destinations: Destination[] }) {
+  if (destinations.length === 0) return null;
+  return <CostCalculatorInner destinations={destinations} />;
+}
+
+function CostCalculatorInner({ destinations }: { destinations: Destination[] }) {
   const { t, locale } = useTranslation();
   const [destinationId, setDestinationId] = useState(destinations[0].id);
   const [travelers, setTravelers] = useState(2);

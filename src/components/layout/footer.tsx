@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { MapPin, Phone, Mail, Send, Car } from "lucide-react";
 import { FacebookIcon, InstagramIcon, YoutubeIcon, XIcon } from "@/components/icons/social-icons";
@@ -7,9 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { navLinks } from "@/lib/config";
 import { siteConfig } from "@/lib/config";
-import { destinations } from "@/lib/data/destinations";
+import { subscribeNewsletter } from "@/lib/api";
 import { useTranslation } from "@/hooks/use-translation";
 import { pick } from "@/lib/utils";
+import type { Destination } from "@/types";
 
 const socialLinks = [
   { icon: FacebookIcon, href: siteConfig.social.facebook, label: "Facebook" },
@@ -18,9 +20,26 @@ const socialLinks = [
   { icon: XIcon, href: siteConfig.social.twitter, label: "Twitter" },
 ];
 
-export function Footer() {
+export function Footer({ destinations }: { destinations: Destination[] }) {
   const { t, locale } = useTranslation();
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [statusMsg, setStatusMsg] = useState("");
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    const res = await subscribeNewsletter(email);
+    if (res.ok) {
+      setStatus("done");
+      setStatusMsg("Subscribed! Check your inbox.");
+      setEmail("");
+    } else {
+      setStatus("error");
+      setStatusMsg(res.message || "Something went wrong.");
+    }
+  }
 
   return (
     <footer className="border-t border-border/60 bg-muted/30">
@@ -119,25 +138,30 @@ export function Footer() {
               {t.footer.newsletter}
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">{t.footer.newsletterDesc}</p>
-            <form
-              className="mt-3 flex items-center gap-2"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="mt-3 flex items-center gap-2" onSubmit={handleSubscribe}>
               <Input
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={t.footer.newsletterPlaceholder}
                 className="h-10 bg-background"
               />
               <Button
                 type="submit"
                 size="icon"
+                disabled={status === "loading"}
                 aria-label={t.footer.subscribe}
                 className="h-10 w-10 shrink-0 bg-gradient-to-r from-teal-600 to-teal-400 text-background hover:opacity-90"
               >
                 <Send className="h-4 w-4" />
               </Button>
             </form>
+            {statusMsg && (
+              <p className={`mt-2 text-xs ${status === "error" ? "text-destructive" : "text-green-600"}`}>
+                {statusMsg}
+              </p>
+            )}
           </div>
         </div>
 

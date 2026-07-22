@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Outfit, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers/providers";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { WhatsappFloatingButton } from "@/components/layout/whatsapp-floating-button";
+import { SiteChrome } from "@/components/layout/site-chrome";
+import { fetchDestinations } from "@/lib/api";
 import "./globals.css";
 
 const bodyFont = Inter({
@@ -58,11 +57,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const destinations = await fetchDestinations();
+
   return (
     <html
       lang="en"
@@ -71,10 +72,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsappFloatingButton />
+          <SiteChrome destinations={destinations}>{children}</SiteChrome>
         </Providers>
       </body>
     </html>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DestinationCard } from "@/components/shared/destination-card";
-import { destinations } from "@/lib/data/destinations";
+import { fetchDestinations } from "@/lib/api";
 import { MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: "Explore all destinations covered by Urban Cruise — Varanasi, Ayodhya, Lucknow, Prayagraj, Mathura, Shimla, Kasol, Kerala and more.",
 };
 
-export default function DestinationsPage() {
+export default async function DestinationsPage() {
+  const destinations = await fetchDestinations();
   return (
     <div className="min-h-screen">
       {/* Header */}

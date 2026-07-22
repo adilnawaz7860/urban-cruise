@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import { DestinationCard } from "@/components/shared/destination-card";
-import { destinations } from "@/lib/data/destinations";
 import { useTranslation } from "@/hooks/use-translation";
+import type { Destination } from "@/types";
 
-export function PopularDestinations() {
+export function PopularDestinations({ destinations }: { destinations: Destination[] }) {
   const { t } = useTranslation();
 
   return (

@@ -3,25 +3,17 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
-import { blogs } from "@/lib/data/blogs";
+import { fetchBlogBySlug } from "@/lib/api";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-function getBlogBySlug(slug: string) {
-  return blogs.find((b) => b.slug === slug);
-}
-
-export async function generateStaticParams() {
-  return blogs.map((b) => ({ slug: b.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
-  if (!post) return {};
-  return { title: post.title, description: post.excerpt };
+  const result = await fetchBlogBySlug(slug);
+  if (!result) return {};
+  return { title: result.blog.title, description: result.blog.excerpt };
 }
 
 function formatDate(dateStr: string) {
@@ -34,10 +26,10 @@ function formatDate(dateStr: string) {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getBlogBySlug(slug);
-  if (!post) notFound();
+  const result = await fetchBlogBySlug(slug);
+  if (!result) notFound();
 
-  const related = blogs.filter((b) => b.id !== post.id).slice(0, 2);
+  const { blog: post, related } = result;
 
   return (
     <div className="min-h-screen">

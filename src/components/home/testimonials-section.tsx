@@ -11,11 +11,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
-import { testimonials } from "@/lib/data/testimonials";
 import { useTranslation } from "@/hooks/use-translation";
 import { pick } from "@/lib/utils";
+import type { Testimonial } from "@/types";
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
   const { t, locale } = useTranslation();
 
   return (

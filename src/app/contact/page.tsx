@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { siteConfig, buildWhatsappLink } from "@/lib/config";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -120,58 +121,7 @@ export default function ContactPage() {
               Fill this form and we&apos;ll call you back within 2 hours.
             </p>
 
-            <form
-              className="mt-6 space-y-4"
-            >
-              <div>
-                <label className="mb-1 block text-sm font-medium">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Your name"
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">Phone Number</label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="+91 XXXXX XXXXX"
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">Destination of Interest</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Varanasi, Manali, Kerala..."
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">Message (optional)</label>
-                <textarea
-                  rows={3}
-                  placeholder="Tell us about your trip requirements..."
-                  className="w-full resize-none rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <a
-                href={buildWhatsappLink(
-                  "Hello Urban Cruise! I just submitted an inquiry from your website. Please get in touch."
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-md hover:opacity-90"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Send via WhatsApp
-              </a>
-              <p className="text-center text-xs text-muted-foreground">
-                You&apos;ll be redirected to WhatsApp with your inquiry pre-filled.
-              </p>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>

@@ -155,6 +155,11 @@
     @apply bg-card/60 backdrop-blur-xl border border-white/10 shadow-xl shadow-black/5;
   }
 
+  /* Admin form inputs */
+  .admin-input {
+    @apply w-full rounded-xl border border-border bg-background px-4 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary;
+  }
+
   /* Gradient text */
   .text-gradient-gold {
     @apply bg-clip-text text-transparent bg-linear-to-r from-orange-400 via-orange-500 to-rose-400;

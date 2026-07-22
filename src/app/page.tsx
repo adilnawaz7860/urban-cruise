@@ -11,13 +11,25 @@ import { GallerySection } from "@/components/home/gallery-section";
 import { FaqSection } from "@/components/home/faq-section";
 import { ContactCta } from "@/components/home/contact-cta";
 import { QuickBookSection } from "@/components/home/quick-book-section";
-import { fetchFeaturedPackages, fetchBlogs, fetchGallery } from "@/lib/api";
+import {
+  fetchFeaturedPackages,
+  fetchBlogs,
+  fetchGallery,
+  fetchDestinations,
+  fetchTestimonials,
+  fetchFaqs,
+  fetchSiteStats,
+} from "@/lib/api";
 
 export default async function Home() {
-  const [packages, posts, images] = await Promise.all([
+  const [packages, posts, images, destinations, testimonials, faqs, siteStats] = await Promise.all([
     fetchFeaturedPackages(),
     fetchBlogs(),
     fetchGallery(),
+    fetchDestinations(),
+    fetchTestimonials(),
+    fetchFaqs(),
+    fetchSiteStats(),
   ]);
 
   return (
@@ -26,14 +38,14 @@ export default async function Home() {
       <QuickBookSection />
       <WhyChooseUs />
       <FeaturedPackages packages={packages} />
-      <PopularDestinations />
-      <CostCalculator />
-      <StatsSection />
+      <PopularDestinations destinations={destinations} />
+      <CostCalculator destinations={destinations} />
+      <StatsSection siteStats={siteStats} />
       {/* <AnalyticsSection /> */}
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
       <BlogSection posts={posts.slice(0, 4)} />
       <GallerySection images={images.slice(0, 8)} />
-      <FaqSection />
+      <FaqSection faqs={faqs} />
       <ContactCta />
     </>
   );
