@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { submitContact } from "@/lib/api";
+import { submitEnquiry } from "@/lib/forms";
 
 export function ContactForm() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", destination: "", message: "" });
@@ -12,11 +12,12 @@ export function ContactForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("loading");
-    const res = await submitContact({
+    const res = await submitEnquiry({
       name: form.name,
       email: form.email,
       phone: form.phone,
-      message: form.destination ? `Destination: ${form.destination}\n\n${form.message}` : form.message || "No message provided.",
+      destination: form.destination || undefined,
+      message: form.message || undefined,
     });
     if (res.ok) {
       setStatus("done");

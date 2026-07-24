@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { fetchPackageBySlug, fetchPackages } from "@/lib/api";
 import { BookingCard } from "@/components/shared/booking-card";
+import { EnquiryForm } from "@/components/shared/enquiry-form";
 import { formatINR } from "@/lib/utils";
 
 interface Props {
@@ -192,7 +193,7 @@ export default async function PackageDetailPage({ params }: Props) {
           </div>
 
           {/* Right: Booking card with service selector */}
-          <div>
+          <div className="space-y-6">
             <BookingCard
               title={pkg.title}
               destination={pkg.destination}
@@ -202,6 +203,7 @@ export default async function PackageDetailPage({ params }: Props) {
               originalPrice={pkg.originalPrice}
               discountPercent={pkg.discountPercent}
             />
+            <EnquiryForm packageId={pkg.id} packageTitle={pkg.title} destination={pkg.destination} />
           </div>
         </div>
 

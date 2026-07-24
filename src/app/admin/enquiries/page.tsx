@@ -12,6 +12,8 @@ interface Enquiry {
   email: string;
   phone: string;
   destination: string;
+  travelDate?: string;
+  travelers?: number;
   message: string;
   status: "new" | "read" | "replied" | "closed";
   createdAt: string;
@@ -56,6 +58,7 @@ export default function AdminEnquiriesPage() {
   const columns: DataTableColumn<Enquiry>[] = [
     { header: "Name", cell: (e) => <span className="font-medium">{e.name}</span> },
     { header: "Destination", cell: (e) => e.destination || "—" },
+    { header: "Travel Date", cell: (e) => (e.travelDate ? new Date(e.travelDate).toLocaleDateString("en-IN") : "—") },
     { header: "Phone", cell: (e) => e.phone || "—" },
     {
       header: "Status",
@@ -97,6 +100,8 @@ export default function AdminEnquiriesPage() {
               <Row label="Email" value={selected.email} />
               <Row label="Phone" value={selected.phone} />
               <Row label="Destination" value={selected.destination} />
+              <Row label="Travel Date" value={selected.travelDate ? new Date(selected.travelDate).toLocaleDateString("en-IN") : ""} />
+              <Row label="Travelers" value={selected.travelers ? String(selected.travelers) : ""} />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Message</p>
                 <p className="mt-1 whitespace-pre-wrap">{selected.message}</p>

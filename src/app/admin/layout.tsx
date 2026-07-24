@@ -12,7 +12,6 @@ import {
   MapPin,
   HelpCircle,
   Inbox,
-  Mail,
   Users,
   Settings,
   LogOut,
@@ -29,7 +28,6 @@ const NAV_ITEMS = [
   { href: "/admin/destinations", label: "Destinations", icon: MapPin },
   { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
   { href: "/admin/enquiries", label: "Enquiries", icon: Inbox },
-  { href: "/admin/contacts", label: "Contact Messages", icon: Mail },
   { href: "/admin/newsletter", label: "Subscribers", icon: Users },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];

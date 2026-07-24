@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { navLinks } from "@/lib/config";
 import { siteConfig } from "@/lib/config";
-import { subscribeNewsletter } from "@/lib/api";
+import { subscribeNewsletter } from "@/lib/forms";
 import { useTranslation } from "@/hooks/use-translation";
 import { pick } from "@/lib/utils";
 import type { Destination } from "@/types";

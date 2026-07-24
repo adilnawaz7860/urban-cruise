@@ -7,44 +7,19 @@ import type {
   FaqItem,
   SiteStats,
 } from "@/types";
+import { connectDB } from "@/lib/server/db";
+import { Package } from "@/lib/server/models/Package";
+import { Blog } from "@/lib/server/models/Blog";
+import { Gallery } from "@/lib/server/models/Gallery";
+import { Destination as DestinationModel } from "@/lib/server/models/Destination";
+import { Testimonial as TestimonialModel } from "@/lib/server/models/Testimonial";
+import { Faq } from "@/lib/server/models/Faq";
+import { Settings } from "@/lib/server/models/Settings";
+import { parsePagination, buildSearch } from "@/lib/server/api-helpers";
 
-function apiUrl(path: string) {
-  if (typeof window !== "undefined") return path;
-  const base = process.env.SITE_URL || "http://localhost:3000";
-  return `${base}${path}`;
-}
-
-async function apiFetch<T>(path: string, init?: RequestInit): Promise<T | null> {
-  try {
-    const res = await fetch(apiUrl(path), {
-      next: { revalidate: 60 },
-      ...init,
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data as T;
-  } catch {
-    return null;
-  }
-}
-
-export async function apiPost<T = unknown>(
-  path: string,
-  body: unknown
-): Promise<{ ok: boolean; data?: T; message?: string }> {
-  try {
-    const res = await fetch(apiUrl(path), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      cache: "no-store",
-    });
-    const json = await res.json();
-    return { ok: res.ok, data: json.data, message: json.message };
-  } catch {
-    return { ok: false, message: "Network error. Please try again." };
-  }
-}
+// This module runs Mongoose queries directly and must only ever be imported
+// from Server Components / route handlers, never from a "use client" file
+// (see src/lib/forms.ts for the client-safe form-submission helpers).
 
 // ─── Adapters ─────────────────────────────────────────────────────────────────
 
@@ -154,106 +129,136 @@ function adaptFaq(f: any): FaqItem {
 // ─── Packages ─────────────────────────────────────────────────────────────────
 
 export async function fetchFeaturedPackages(): Promise<TourPackage[]> {
-  const res = await apiFetch<unknown[]>("/api/packages/featured?limit=8");
-  return (res || []).map(adaptPackage);
+  await connectDB();
+  const items = await Package.find({ status: "published", featured: true })
+    .sort({ createdAt: -1 })
+    .limit(8)
+    .lean();
+  return items.map(adaptPackage);
 }
 
 export async function fetchPackages(params?: Record<string, string>): Promise<TourPackage[]> {
-  const qs = params ? "?" + new URLSearchParams(params).toString() : "?limit=100";
-  const res = await apiFetch<unknown[]>(`/api/packages${qs}`);
-  return (res || []).map(adaptPackage);
+  await connectDB();
+  const searchParams = new URLSearchParams(params);
+  const { skip, sort, limit } = parsePagination(searchParams);
+  const effectiveLimit = params?.limit ? limit : 100;
+
+  const filter: Record<string, unknown> = { status: "published" };
+
+  const destination = searchParams.get("destination");
+  if (destination) filter.destination = new RegExp(destination, "i");
+
+  const category = searchParams.get("category");
+  if (category) filter.categories = category;
+
+  if (searchParams.get("featured") === "true") filter.featured = true;
+
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
+  if (minPrice || maxPrice) {
+    filter.price = {
+      ...(minPrice ? { $gte: Number(minPrice) } : {}),
+      ...(maxPrice ? { $lte: Number(maxPrice) } : {}),
+    };
+  }
+
+  const search = searchParams.get("search");
+  Object.assign(filter, buildSearch(["title", "destination", "shortDescription"], search));
+
+  const items = await Package.find(filter).sort(sort).skip(skip).limit(effectiveLimit).lean();
+  return items.map(adaptPackage);
 }
 
 export async function fetchPackageBySlug(slug: string): Promise<TourPackage | null> {
-  const res = await apiFetch<unknown>(`/api/packages/${slug}`);
-  return res ? adaptPackage(res) : null;
+  await connectDB();
+  const pkg = await Package.findOne({ slug, status: "published" }).lean();
+  return pkg ? adaptPackage(pkg) : null;
 }
 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 
 export async function fetchBlogs(): Promise<BlogPost[]> {
-  const res = await apiFetch<unknown[]>("/api/blogs?limit=50");
-  return (res || []).map(adaptBlog);
+  await connectDB();
+  const items = await Blog.find({ status: "published" })
+    .select("-content")
+    .populate("author", "name")
+    .sort({ createdAt: -1 })
+    .limit(50)
+    .lean();
+  return items.map(adaptBlog);
 }
 
 export async function fetchBlogBySlug(
   slug: string
 ): Promise<{ blog: BlogPost; related: BlogPost[] } | null> {
-  const res = await apiFetch<{ blog: unknown; related: unknown[] }>(`/api/blogs/${slug}`);
-  if (!res?.blog) return null;
+  await connectDB();
+
+  const blog = await Blog.findOneAndUpdate(
+    { slug, status: "published" },
+    { $inc: { views: 1 } },
+    { new: true }
+  ).populate("author", "name email avatar");
+  if (!blog) return null;
+
+  const related = await Blog.find({
+    category: blog.category,
+    status: "published",
+    _id: { $ne: blog._id },
+  })
+    .select("title slug excerpt featuredImage category date publishedAt readTime")
+    .limit(3)
+    .lean();
+
   return {
-    blog: adaptBlog(res.blog),
-    related: (res.related || []).map(adaptBlog),
+    blog: adaptBlog(blog),
+    related: related.map(adaptBlog),
   };
 }
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
 export async function fetchGallery(): Promise<GalleryImage[]> {
-  const res = await apiFetch<unknown[]>("/api/gallery?limit=50");
-  return (res || []).map(adaptGallery);
+  await connectDB();
+  const items = await Gallery.find({ isActive: true }).sort({ sortOrder: 1 }).limit(50).lean();
+  return items.map(adaptGallery);
 }
 
 // ─── Destinations ─────────────────────────────────────────────────────────────
 
 export async function fetchDestinations(): Promise<Destination[]> {
-  const res = await apiFetch<unknown[]>("/api/destinations");
-  return (res || []).map(adaptDestination);
+  await connectDB();
+  const items = await DestinationModel.find({ isActive: true }).sort({ sortOrder: 1 }).lean();
+  return items.map(adaptDestination);
 }
 
 export async function fetchDestinationBySlug(slug: string): Promise<Destination | null> {
-  const res = await apiFetch<unknown>(`/api/destinations/${slug}`);
-  return res ? adaptDestination(res) : null;
+  await connectDB();
+  const destination = await DestinationModel.findOne({ slug, isActive: true }).lean();
+  return destination ? adaptDestination(destination) : null;
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
 
 export async function fetchTestimonials(): Promise<Testimonial[]> {
-  const res = await apiFetch<unknown[]>("/api/testimonials");
-  return (res || []).map(adaptTestimonial);
+  await connectDB();
+  const items = await TestimonialModel.find({ isPublished: true }).sort({ sortOrder: 1 }).lean();
+  return items.map(adaptTestimonial);
 }
 
 // ─── FAQs ──────────────────────────────────────────────────────────────────────
 
 export async function fetchFaqs(): Promise<FaqItem[]> {
-  const res = await apiFetch<unknown[]>("/api/faqs");
-  return (res || []).map(adaptFaq);
+  await connectDB();
+  const items = await Faq.find({ isActive: true }).sort({ sortOrder: 1 }).lean();
+  return items.map(adaptFaq);
 }
 
 // ─── Settings ─────────────────────────────────────────────────────────────────
 
 export async function fetchSiteStats(): Promise<SiteStats> {
-  const res = await apiFetch<{ stats?: SiteStats }>("/api/settings");
+  await connectDB();
+  const settings = await Settings.getSingleton();
   return (
-    res?.stats || { happyCustomers: 0, toursCompleted: 0, destinationsCovered: 0, yearsOfExperience: 0 }
+    settings.stats || { happyCustomers: 0, toursCompleted: 0, destinationsCovered: 0, yearsOfExperience: 0 }
   );
-}
-
-// ─── Enquiry / Contact ────────────────────────────────────────────────────────
-
-export async function submitEnquiry(data: {
-  name: string;
-  email: string;
-  phone: string;
-  destination?: string;
-  travelDate?: string;
-  travelers?: number;
-  message?: string;
-}) {
-  return apiPost("/api/enquiries", data);
-}
-
-export async function submitContact(data: {
-  name: string;
-  email: string;
-  phone?: string;
-  message: string;
-}) {
-  return apiPost("/api/contact", data);
-}
-
-// ─── Newsletter ───────────────────────────────────────────────────────────────
-
-export async function subscribeNewsletter(email: string, name?: string) {
-  return apiPost("/api/newsletter/subscribe", { email, name });
 }

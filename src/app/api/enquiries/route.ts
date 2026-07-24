@@ -11,7 +11,9 @@ const schema = z.object({
   phone: z.string().max(20).optional(),
   destination: z.string().max(150).optional(),
   package: z.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
-  message: z.string().min(10).max(2000),
+  travelDate: z.coerce.date().optional(),
+  travelers: z.coerce.number().int().min(1).optional(),
+  message: z.string().max(2000).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -19,7 +21,10 @@ export async function POST(request: NextRequest) {
     const body = schema.parse(await request.json());
     await connectDB();
 
-    const enquiry = await Enquiry.create(body);
+    const enquiry = await Enquiry.create({
+      ...body,
+      message: body.message?.trim() || `Interested in a trip to ${body.destination || "the destination"}. Please share a quote.`,
+    });
     sendEnquiryReceived(enquiry);
 
     return created(enquiry, "Enquiry submitted successfully");

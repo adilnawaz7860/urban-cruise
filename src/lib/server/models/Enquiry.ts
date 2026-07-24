@@ -5,6 +5,8 @@ export interface EnquiryDoc extends Document {
   email: string;
   phone: string;
   destination: string;
+  travelDate?: Date;
+  travelers?: number;
   message: string;
   package?: Types.ObjectId;
   status: "new" | "read" | "replied" | "closed";
@@ -24,6 +26,8 @@ const EnquirySchema = new Schema<EnquiryDoc>(
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, trim: true, default: "" },
     destination: { type: String, trim: true, default: "" },
+    travelDate: Date,
+    travelers: { type: Number, min: 1 },
     message: { type: String, required: true, maxlength: 2000 },
     package: { type: Schema.Types.ObjectId, ref: "Package" },
     status: { type: String, enum: ["new", "read", "replied", "closed"], default: "new" },

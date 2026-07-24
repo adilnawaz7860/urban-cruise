@@ -8,7 +8,6 @@ interface DashboardStats {
   packages: { total: number; published: number };
   blogs: { total: number; published: number };
   enquiries: { total: number; unread: number };
-  contacts: { unread: number };
   subscribers: { active: number };
 }
 
