@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
-  BookOpen,
+  // BookOpen,
   Images,
   Quote,
   MapPin,
@@ -22,7 +22,7 @@ import { adminGet, adminPost } from "@/lib/admin/api-client";
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/packages", label: "Packages", icon: Package },
-  { href: "/admin/blogs", label: "Blog Posts", icon: BookOpen },
+  // { href: "/admin/blogs", label: "Blog Posts", icon: BookOpen },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { href: "/admin/destinations", label: "Destinations", icon: MapPin },

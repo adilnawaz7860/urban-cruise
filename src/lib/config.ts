@@ -20,9 +20,9 @@ export const navLinks = [
   { href: "/packages", key: "packages" },
   { href: "/destinations", key: "destinations" },
   { href: "/gallery", key: "gallery" },
-  { href: "/blog", key: "blog" },
-  { href: "/about", key: "about" },
-  { href: "/contact", key: "contact" },
+  // { href: "/blog", key: "blog" },
+  // { href: "/about", key: "about" },
+  // { href: "/contact", key: "contact" },
 ] as const;
 
 export const moreLinks = [
