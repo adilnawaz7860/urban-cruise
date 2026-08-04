@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { connectDB } from "./db";
 import { Admin, type AdminDoc, type AdminRole } from "./models/Admin";
+import { Customer, type CustomerDoc } from "./models/Customer";
 import { ACCESS_COOKIE, TokenError, verifyAccessToken } from "./auth";
+import { CUSTOMER_ACCESS_COOKIE, verifyCustomerAccessToken } from "./customer-auth";
 
 export class ApiError extends Error {
   statusCode: number;
@@ -120,4 +122,23 @@ export async function requireAdmin(minRole: AdminRole = "content_manager"): Prom
     throw ApiError.forbidden();
   }
   return admin;
+}
+
+export async function requireCustomer(): Promise<CustomerDoc> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(CUSTOMER_ACCESS_COOKIE)?.value;
+  if (!token) throw ApiError.unauthorized("Not authenticated");
+
+  let payload;
+  try {
+    payload = verifyCustomerAccessToken(token);
+  } catch (err) {
+    if (err instanceof TokenError) throw ApiError.unauthorized(err.message);
+    throw ApiError.unauthorized("Invalid session");
+  }
+
+  await connectDB();
+  const customer = await Customer.findById(payload.id);
+  if (!customer || !customer.isActive) throw ApiError.unauthorized("Account not found or inactive");
+  return customer;
 }

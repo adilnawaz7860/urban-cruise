@@ -56,7 +56,7 @@ export default async function DestinationPage({ params }: Props) {
             </span>
             <span>
               Starting from{" "}
-              <span className="font-semibold text-teal-300">{formatINR(dest.startingPrice)}</span>
+              <span className="font-semibold text-amber-300">{formatINR(dest.startingPrice)}</span>
             </span>
           </div>
         </div>

@@ -46,7 +46,7 @@ export function DestinationCard({ destination, index = 0 }: { destination: Desti
           </p>
           <p className="mt-2 text-sm">
             <span className="text-white/70">{t.destinations.startingFrom}</span>{" "}
-            <span className="font-semibold text-teal-300">
+            <span className="font-semibold text-amber-300">
               {formatINR(destination.startingPrice)}
             </span>
           </p>

@@ -42,10 +42,10 @@ export function WhyChooseUs() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
               whileHover={{ y: -6 }}
-              className="group glass-card relative overflow-hidden rounded-2xl p-6 transition-shadow hover:shadow-2xl hover:shadow-teal-600/10"
+              className="group glass-card relative overflow-hidden rounded-2xl p-6 transition-shadow hover:shadow-2xl hover:shadow-amber-600/10"
             >
-              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-teal-500/20 to-teal-700/10 blur-2xl transition-transform duration-500 group-hover:scale-150" />
-              <span className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 to-teal-400 text-background shadow-md shadow-teal-600/20">
+              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-700/10 blur-2xl transition-transform duration-500 group-hover:scale-150" />
+              <span className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-amber-400 text-background shadow-md shadow-amber-600/20">
                 <Icon className="h-6 w-6" />
               </span>
               <h3 className="relative mt-4 text-lg font-semibold">{item.title}</h3>

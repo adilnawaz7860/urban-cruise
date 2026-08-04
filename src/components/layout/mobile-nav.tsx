@@ -16,7 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { LanguageToggle } from "@/components/layout/language-toggle";
+import { AccountMenu } from "@/components/layout/account-menu";
 import { navLinks, moreLinks } from "@/lib/config";
+import { services } from "@/lib/data/services";
 import { useTranslation } from "@/hooks/use-translation";
 import { cn } from "@/lib/utils";
 
@@ -72,6 +74,35 @@ export function MobileNav() {
               );
             })}
           </ul>
+
+          <p className="mt-4 px-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t.nav.services}
+          </p>
+          <ul className="mt-1 flex flex-col gap-1">
+            {services.map((service) => {
+              const active = pathname === `/services/${service.slug}`;
+              return (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      active
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground/80 hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <service.icon className="h-4 w-4" />
+                      {t.nav[service.navKey]}
+                    </span>
+                    <ChevronRight className="h-4 w-4 opacity-40" />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
 
         <SheetFooter className="gap-3 border-t border-border/60 px-5 py-4">
@@ -82,12 +113,13 @@ export function MobileNav() {
             <div className="flex items-center gap-1">
               <LanguageToggle />
               <ThemeToggle />
+              <AccountMenu />
             </div>
           </div>
           <Button
             render={<Link href="/packages" onClick={() => setOpen(false)} />}
             nativeButton={false}
-            className="w-full bg-linear-to-r from-teal-600 to-teal-400 text-background font-semibold hover:opacity-90"
+            className="w-full bg-linear-to-r from-amber-600 to-amber-400 text-background font-semibold hover:opacity-90"
           >
             {t.nav.bookNow}
           </Button>

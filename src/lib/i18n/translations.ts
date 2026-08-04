@@ -24,6 +24,11 @@ const enRaw = {
     trackInquiry: "Track Inquiry",
     bookNow: "Book Now",
     getQuote: "Get a Free Quote",
+    services: "Services",
+    bookTaxi: "Book Taxi Services",
+    corporateCarRental: "Corporate Car Rental",
+    weddingCarRental: "Wedding Car Rental",
+    luxuryCarRental: "Luxury Car Rental",
   },
   common: {
     explorePackages: "Explore Packages",
@@ -236,6 +241,11 @@ export const hi: Dictionary = {
     trackInquiry: "पूछताछ ट्रैक करें",
     bookNow: "अभी बुक करें",
     getQuote: "मुफ़्त कोटेशन पाएं",
+    services: "सेवाएं",
+    bookTaxi: "टैक्सी सेवा बुक करें",
+    corporateCarRental: "कॉर्पोरेट कार रेंटल",
+    weddingCarRental: "वेडिंग कार रेंटल",
+    luxuryCarRental: "लक्जरी कार रेंटल",
   },
   common: {
     explorePackages: "पैकेज देखें",

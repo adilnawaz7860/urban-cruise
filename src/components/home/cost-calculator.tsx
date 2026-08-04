@@ -180,7 +180,7 @@ function CostCalculatorInner({ destinations }: { destinations: Destination[] }) 
                   className={cn(
                     "rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors",
                     hotelCategory === opt.value
-                      ? "border-transparent bg-gradient-to-r from-teal-600 to-teal-400 text-background shadow-md shadow-teal-600/20"
+                      ? "border-transparent bg-gradient-to-r from-amber-600 to-amber-400 text-background shadow-md shadow-amber-600/20"
                       : "border-border bg-background/40 text-muted-foreground hover:border-primary/40"
                   )}
                 >
@@ -253,7 +253,7 @@ function CostCalculatorInner({ destinations }: { destinations: Destination[] }) 
           transition={{ duration: 0.6 }}
           className="lg:col-span-2"
         >
-          <div className="sticky top-24 overflow-hidden rounded-3xl bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500 p-[1px] shadow-xl shadow-teal-600/20">
+          <div className="sticky top-24 overflow-hidden rounded-3xl bg-gradient-to-br from-amber-600 via-amber-500 to-amber-500 p-[1px] shadow-xl shadow-amber-600/20">
             <div className="rounded-[calc(1.5rem-1px)] bg-card/95 p-6 backdrop-blur-xl lg:p-8">
               <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                 <Sparkles className="h-4 w-4" />
@@ -287,7 +287,7 @@ function CostCalculatorInner({ destinations }: { destinations: Destination[] }) 
                 render={<a href={buildWhatsappLink(whatsappMsg)} target="_blank" rel="noopener noreferrer" />}
                 nativeButton={false}
                 size="lg"
-                className="mt-6 w-full gap-2 rounded-full bg-gradient-to-r from-teal-600 to-teal-400 font-semibold text-background hover:opacity-90"
+                className="mt-6 w-full gap-2 rounded-full bg-gradient-to-r from-amber-600 to-amber-400 font-semibold text-background hover:opacity-90"
               >
                 <MessageCircle className="h-4 w-4" />
                 {t.calculator.getQuote}

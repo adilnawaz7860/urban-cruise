@@ -1,22 +1,44 @@
 ﻿"use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Heart, Star, Clock, MessageCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { TourPackage } from "@/types";
 import { useTranslation } from "@/hooks/use-translation";
-import { useWishlistStore } from "@/store/wishlist-store";
-import { pick, formatINR, cn } from "@/lib/utils";
+import { useCustomer } from "@/hooks/use-customer";
+import { customerPost } from "@/lib/customer/api-client";
+import { toast } from "@/lib/toast";
+import { pick, formatINR, imgSrc, cn } from "@/lib/utils";
 import { buildWhatsappLink } from "@/lib/config";
 
 export function PackageCard({ pkg, index = 0 }: { pkg: TourPackage; index?: number }) {
   const { t, locale } = useTranslation();
-  const has = useWishlistStore((s) => s.has);
-  const toggle = useWishlistStore((s) => s.toggle);
-  const wishlisted = has(pkg.id);
+  const router = useRouter();
+  const pathname = usePathname();
+  const { customer, isLoggedIn, refetch } = useCustomer();
+  const [pending, setPending] = useState(false);
+  const wishlisted = customer?.wishlist.includes(pkg.id) ?? false;
+
+  async function handleToggleWishlist() {
+    if (!isLoggedIn) {
+      router.push(`/login?next=${encodeURIComponent(pathname)}`);
+      return;
+    }
+    setPending(true);
+    try {
+      await customerPost("/api/customer/wishlist", { packageId: pkg.id });
+      await refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Couldn't update your wishlist");
+    } finally {
+      setPending(false);
+    }
+  }
 
   const whatsappMsg = `Hello, I am interested in the ${pkg.title} package. Please share complete details.`;
 
@@ -31,7 +53,7 @@ export function PackageCard({ pkg, index = 0 }: { pkg: TourPackage; index?: numb
     >
       <div className="relative h-56 w-full overflow-hidden">
         <Image
-          src={pkg.image}
+          src={imgSrc(pkg.image)}
           alt={pick(locale, pkg.title, pkg.titleHi)}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -41,7 +63,7 @@ export function PackageCard({ pkg, index = 0 }: { pkg: TourPackage; index?: numb
 
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           {pkg.bestSeller && (
-            <Badge className="border-0 bg-gradient-to-r from-teal-600 to-teal-400 text-background">
+            <Badge className="border-0 bg-gradient-to-r from-amber-600 to-amber-400 text-background">
               {t.featuredPackages.badge}
             </Badge>
           )}
@@ -51,9 +73,10 @@ export function PackageCard({ pkg, index = 0 }: { pkg: TourPackage; index?: numb
         </div>
 
         <button
-          onClick={() => toggle(pkg.id)}
+          onClick={handleToggleWishlist}
+          disabled={pending}
           aria-label="Toggle wishlist"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 backdrop-blur-md transition-colors hover:bg-black/50"
+          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 backdrop-blur-md transition-colors hover:bg-black/50 disabled:opacity-60"
         >
           <Heart
             className={cn(
@@ -113,7 +136,7 @@ export function PackageCard({ pkg, index = 0 }: { pkg: TourPackage; index?: numb
                 render={<Link href={`/packages/${pkg.slug}`} />}
                 nativeButton={false}
                 size="sm"
-                className="rounded-full bg-gradient-to-r from-teal-600 to-teal-400 font-semibold text-background hover:opacity-90"
+                className="rounded-full bg-gradient-to-r from-amber-600 to-amber-400 font-semibold text-background hover:opacity-90"
               >
                 {t.common.bookNow}
               </Button>

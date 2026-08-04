@@ -15,7 +15,7 @@ export function ContactCta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500 px-6 py-14 text-center shadow-2xl shadow-teal-600/20 sm:px-12 sm:py-20"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-600 via-amber-500 to-amber-500 px-6 py-14 text-center shadow-2xl shadow-amber-600/20 sm:px-12 sm:py-20"
       >
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-20" />
         <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-white/20 blur-3xl" />

@@ -68,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border/60 bg-background lg:flex">
         <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-heading text-lg font-bold">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-teal-600 to-teal-400 text-background">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-600 to-amber-400 text-background">
             <Car className="h-4 w-4" strokeWidth={2.5} />
           </span>
           Admin Panel

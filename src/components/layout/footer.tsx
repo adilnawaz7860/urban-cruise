@@ -48,7 +48,7 @@ export function Footer({ destinations }: { destinations: Destination[] }) {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 font-heading text-lg font-bold">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 via-teal-500 to-teal-400 text-background shadow-lg shadow-teal-600/20">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 via-amber-500 to-amber-400 text-background shadow-lg shadow-amber-600/20">
                 <Car className="h-5 w-5" strokeWidth={2.5} />
               </span>
               Urban <span className="text-gradient-gold">Cruise</span>
@@ -152,7 +152,7 @@ export function Footer({ destinations }: { destinations: Destination[] }) {
                 size="icon"
                 disabled={status === "loading"}
                 aria-label={t.footer.subscribe}
-                className="h-10 w-10 shrink-0 bg-gradient-to-r from-teal-600 to-teal-400 text-background hover:opacity-90"
+                className="h-10 w-10 shrink-0 bg-gradient-to-r from-amber-600 to-amber-400 text-background hover:opacity-90"
               >
                 <Send className="h-4 w-4" />
               </Button>

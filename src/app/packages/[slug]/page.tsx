@@ -13,7 +13,7 @@ import {
 import { fetchPackageBySlug, fetchPackages } from "@/lib/api";
 import { BookingCard } from "@/components/shared/booking-card";
 import { EnquiryForm } from "@/components/shared/enquiry-form";
-import { formatINR } from "@/lib/utils";
+import { formatINR, imgSrc } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -84,7 +84,7 @@ export default async function PackageDetailPage({ params }: Props) {
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative h-80 w-full overflow-hidden sm:h-105">
-        <Image src={pkg.image} alt={pkg.title} fill className="object-cover" priority />
+        <Image src={imgSrc(pkg.image)} alt={pkg.title} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
           <Link
@@ -96,7 +96,7 @@ export default async function PackageDetailPage({ params }: Props) {
           </Link>
           <div className="flex flex-wrap items-center gap-2 text-xs text-white/70">
             {pkg.bestSeller && (
-              <span className="rounded-full bg-teal-600 px-2.5 py-0.5 font-semibold text-white">
+              <span className="rounded-full bg-amber-600 px-2.5 py-0.5 font-semibold text-white">
                 Best Seller
               </span>
             )}
@@ -183,7 +183,7 @@ export default async function PackageDetailPage({ params }: Props) {
                 <ul className="mt-4 space-y-2">
                   {exclusions.map((item) => (
                     <li key={item} className="flex items-start gap-2 text-sm">
-                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" />
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                       {item}
                     </li>
                   ))}
@@ -215,7 +215,7 @@ export default async function PackageDetailPage({ params }: Props) {
               {related.map((p) => (
                 <div key={p.id} className="glass-card overflow-hidden rounded-2xl">
                   <div className="relative h-44">
-                    <Image src={p.image} alt={p.title} fill className="object-cover" />
+                    <Image src={imgSrc(p.image)} alt={p.title} fill className="object-cover" />
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold leading-snug">{p.title}</h3>

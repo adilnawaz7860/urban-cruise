@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm rounded-2xl border border-border/60 bg-background p-8 shadow-sm">
         <div className="flex flex-col items-center text-center">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 to-teal-400 text-background">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-amber-400 text-background">
             <Car className="h-5 w-5" strokeWidth={2.5} />
           </span>
           <h1 className="mt-3 text-xl font-bold">Admin Login</h1>

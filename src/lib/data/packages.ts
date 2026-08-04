@@ -3,7 +3,7 @@ import type { TourPackage } from "@/types";
 export const packages: TourPackage[] = [
   {
     id: "pkg-varanasi-ganga",
-    slug: "varanasi-ganga-darshan-1n2d",
+    slug: "varanasi-ganga-darshan",
     title: "Varanasi Ganga Darshan",
     titleHi: "वाराणसी गंगा दर्शन",
     destination: "Varanasi",
@@ -24,7 +24,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-ayodhya-ram-mandir",
-    slug: "ayodhya-ram-mandir-tour-1n2d",
+    slug: "ayodhya-ram-mandir-tour",
     title: "Ayodhya Ram Mandir Tour",
     titleHi: "अयोध्या राम मंदिर टूर",
     destination: "Ayodhya",
@@ -45,7 +45,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-lucknow-heritage",
-    slug: "lucknow-heritage-city-tour-1n2d",
+    slug: "lucknow-heritage-city-tour",
     title: "Lucknow Heritage City Tour",
     titleHi: "लखनऊ हेरिटेज सिटी टूर",
     destination: "Lucknow",
@@ -65,7 +65,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-prayagraj-sangam",
-    slug: "prayagraj-triveni-sangam-1n2d",
+    slug: "prayagraj-triveni-sangam",
     title: "Prayagraj Triveni Sangam",
     titleHi: "प्रयागराज त्रिवेणी संगम",
     destination: "Prayagraj",
@@ -85,7 +85,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-naimisharanya-tirth",
-    slug: "naimisharanya-tirth-yatra-1n2d",
+    slug: "naimisharanya-tirth-yatra",
     title: "Naimisharanya Tirth Yatra",
     titleHi: "नैमिषारण्य तीर्थ यात्रा",
     destination: "Naimisharanya",
@@ -104,7 +104,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-mathura-vrindavan",
-    slug: "mathura-vrindavan-tour-2n3d",
+    slug: "mathura-vrindavan-tour",
     title: "Mathura Vrindavan Tour",
     titleHi: "मथुरा वृंदावन टूर",
     destination: "Mathura & Vrindavan",
@@ -124,7 +124,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-shimla-manali",
-    slug: "shimla-manali-trip-4n5d",
+    slug: "shimla-manali-trip",
     title: "Shimla Manali Hill Trip",
     titleHi: "शिमला मनाली हिल ट्रिप",
     destination: "Shimla & Manali",
@@ -143,7 +143,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-khatu-shyam",
-    slug: "khatu-shyam-rajasthan-2n3d",
+    slug: "khatu-shyam-rajasthan",
     title: "Khatu Shyam Rajasthan Tour",
     titleHi: "खाटू श्याम राजस्थान टूर",
     destination: "Khatu Shyam, Rajasthan",
@@ -162,7 +162,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-manali-snow",
-    slug: "manali-snow-trip-4n5d",
+    slug: "manali-snow-trip",
     title: "Manali Snow Adventure",
     titleHi: "मनाली स्नो एडवेंचर",
     destination: "Manali, Himachal Pradesh",
@@ -182,7 +182,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-kasol-parvati",
-    slug: "kasol-parvati-valley-3n4d",
+    slug: "kasol-parvati-valley",
     title: "Kasol Parvati Valley Trek",
     titleHi: "कसोल पार्वती वैली ट्रेक",
     destination: "Kasol, Himachal Pradesh",
@@ -201,7 +201,7 @@ export const packages: TourPackage[] = [
   },
   {
     id: "pkg-kerala-backwaters",
-    slug: "kerala-backwaters-munnar-5n6d",
+    slug: "kerala-backwaters-munnar",
     title: "Kerala Backwaters & Munnar",
     titleHi: "केरल बैकवाटर एवं मुन्नार",
     destination: "Kerala",

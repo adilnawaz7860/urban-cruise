@@ -24,7 +24,7 @@ import { parsePagination, buildSearch } from "@/lib/server/api-helpers";
 // ─── Adapters ─────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function adaptPackage(p: any): TourPackage {
+export function adaptPackage(p: any): TourPackage {
   return {
     id: String(p._id || p.id),
     slug: String(p.slug),
@@ -258,7 +258,11 @@ export async function fetchFaqs(): Promise<FaqItem[]> {
 export async function fetchSiteStats(): Promise<SiteStats> {
   await connectDB();
   const settings = await Settings.getSingleton();
-  return (
-    settings.stats || { happyCustomers: 0, toursCompleted: 0, destinationsCovered: 0, yearsOfExperience: 0 }
-  );
+  const stats = settings.stats;
+  return {
+    happyCustomers: stats?.happyCustomers ?? 0,
+    toursCompleted: stats?.toursCompleted ?? 0,
+    destinationsCovered: stats?.destinationsCovered ?? 0,
+    yearsOfExperience: stats?.yearsOfExperience ?? 0,
+  };
 }

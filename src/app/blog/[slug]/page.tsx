@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import { fetchBlogBySlug } from "@/lib/api";
+import { imgSrc } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -35,7 +36,7 @@ export default async function BlogPostPage({ params }: Props) {
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative h-72 w-full overflow-hidden sm:h-96">
-        <Image src={post.image} alt={post.title} fill className="object-cover" priority />
+        <Image src={imgSrc(post.image)} alt={post.title} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-4xl px-4 pb-10 sm:px-6">
           <Link
@@ -117,7 +118,7 @@ export default async function BlogPostPage({ params }: Props) {
                 >
                   <div className="relative h-44">
                     <Image
-                      src={p.image}
+                      src={imgSrc(p.image)}
                       alt={p.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"

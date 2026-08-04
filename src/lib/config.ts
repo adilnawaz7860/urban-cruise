@@ -30,6 +30,13 @@ export const moreLinks = [
   { href: "/track-inquiry", key: "trackInquiry" },
 ] as const;
 
+export const servicesLinks = [
+  { href: "/services/book-taxi", key: "bookTaxi" },
+  { href: "/services/corporate-car-rental", key: "corporateCarRental" },
+  { href: "/services/wedding-car-rental", key: "weddingCarRental" },
+  { href: "/services/luxury-car-rental", key: "luxuryCarRental" },
+] as const;
+
 export function buildWhatsappLink(message: string) {
   return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }

@@ -96,7 +96,7 @@ export default function PlannerPage() {
                   max={20}
                   value={travelers}
                   onChange={(e) => setTravelers(Number(e.target.value))}
-                  className="w-full accent-teal-600"
+                  className="w-full accent-amber-600"
                 />
                 <div className="flex justify-between text-xs text-muted-foreground mt-1">
                   <span>1</span><span>20</span>
@@ -113,7 +113,7 @@ export default function PlannerPage() {
                   max={15}
                   value={days}
                   onChange={(e) => setDays(Number(e.target.value))}
-                  className="w-full accent-teal-600"
+                  className="w-full accent-amber-600"
                 />
                 <div className="flex justify-between text-xs text-muted-foreground mt-1">
                   <span>1</span><span>15</span>

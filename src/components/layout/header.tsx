@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ChevronDown, MapPinned, ClipboardCheck } from "lucide-react";
+import { services } from "@/lib/data/services";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { LanguageToggle } from "@/components/layout/language-toggle";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { AccountMenu } from "@/components/layout/account-menu";
 import { navLinks, moreLinks } from "@/lib/config";
 import { useTranslation } from "@/hooks/use-translation";
 import { cn } from "@/lib/utils";
@@ -55,7 +57,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                  "relative whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                   active
                     ? "text-primary"
                     : "text-foreground/75 hover:text-foreground"
@@ -65,7 +67,7 @@ export function Header() {
                 {active && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gradient-to-r from-teal-500 to-teal-400"
+                    className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400"
                   />
                 )}
               </Link>
@@ -77,7 +79,32 @@ export function Header() {
               render={
                 <Button
                   variant="ghost"
-                  className="gap-1 rounded-full px-3.5 text-sm font-medium text-foreground/75 hover:text-foreground"
+                  className="gap-1 whitespace-nowrap rounded-full px-3.5 text-sm font-medium text-foreground/75 hover:text-foreground"
+                />
+              }
+            >
+              {t.nav.services}
+              <ChevronDown className="h-3.5 w-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {services.map((service) => (
+                <DropdownMenuItem
+                  key={service.slug}
+                  render={<Link href={`/services/${service.slug}`} className="flex items-center gap-2" />}
+                >
+                  <service.icon className="h-4 w-4 text-muted-foreground" />
+                  {t.nav[service.navKey]}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  className="gap-1 whitespace-nowrap rounded-full px-3.5 text-sm font-medium text-foreground/75 hover:text-foreground"
                 />
               }
             >
@@ -105,11 +132,12 @@ export function Header() {
           <div className="hidden items-center gap-1 sm:flex">
             <LanguageToggle />
             <ThemeToggle />
+            <AccountMenu />
           </div>
           <Button
             render={<Link href="/packages" />}
             nativeButton={false}
-            className="hidden bg-gradient-to-r from-teal-600 to-teal-400 font-semibold text-background shadow-md shadow-teal-600/20 hover:opacity-90 sm:inline-flex"
+            className="hidden bg-gradient-to-r from-amber-600 to-amber-400 font-semibold text-background shadow-md shadow-amber-600/20 hover:opacity-90 sm:inline-flex"
           >
             {t.nav.bookNow}
           </Button>
