@@ -11,6 +11,9 @@ import { GallerySection } from "@/components/home/gallery-section";
 import { FaqSection } from "@/components/home/faq-section";
 import { ContactCta } from "@/components/home/contact-cta";
 import { QuickBookSection } from "@/components/home/quick-book-section";
+import { LocationMap } from "@/components/home/location-map";
+
+const PRIORITY_DESTINATIONS = ["ayodhya", "varanasi"];
 import {
   fetchFeaturedPackages,
   fetchBlogs,
@@ -32,12 +35,17 @@ export default async function Home() {
     fetchSiteStats(),
   ]);
 
+  const sortedPackages = [...packages].sort((a, b) => {
+    const aPriority = PRIORITY_DESTINATIONS.includes(a.destination.toLowerCase()) ? 0 : 1;
+    const bPriority = PRIORITY_DESTINATIONS.includes(b.destination.toLowerCase()) ? 0 : 1;
+    return aPriority - bPriority;
+  });
+
   return (
     <>
       <HeroSection />
       <QuickBookSection />
-      <WhyChooseUs />
-      <FeaturedPackages packages={packages} />
+      <FeaturedPackages packages={sortedPackages} />
       <PopularDestinations destinations={destinations} />
       <CostCalculator destinations={destinations} />
       <StatsSection siteStats={siteStats} />
@@ -46,6 +54,8 @@ export default async function Home() {
       <BlogSection posts={posts.slice(0, 4)} />
       <GallerySection images={images.slice(0, 8)} />
       <FaqSection faqs={faqs} />
+      <WhyChooseUs />
+      <LocationMap />
       <ContactCta />
     </>
   );

@@ -29,6 +29,7 @@ const enRaw = {
     corporateCarRental: "Corporate Car Rental",
     weddingCarRental: "Wedding Car Rental",
     luxuryCarRental: "Luxury Car Rental",
+    airportPickDrop: "Airport Pick & Drop",
   },
   common: {
     explorePackages: "Explore Packages",
@@ -246,6 +247,7 @@ export const hi: Dictionary = {
     corporateCarRental: "कॉर्पोरेट कार रेंटल",
     weddingCarRental: "वेडिंग कार रेंटल",
     luxuryCarRental: "लक्जरी कार रेंटल",
+    airportPickDrop: "एयरपोर्ट पिक एंड ड्रॉप",
   },
   common: {
     explorePackages: "पैकेज देखें",

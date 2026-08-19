@@ -5,11 +5,11 @@ export const siteConfig = {
   phone: "+91 92609 94765",
   phoneRaw: "+919260994765",
   whatsappNumber: "919260994765",
-  email: "info@urbancruiselko.com",
+  email: "anoop3v@gmail.com",
   address: "Vineet Khand 6, Gomti Nagar, Lucknow, Uttar Pradesh 226010",
   social: {
     facebook: "https://facebook.com/urbancruiselko",
-    instagram: "https://instagram.com/urbancruiselko",
+    instagram: "https://www.instagram.com/urbancruise7",
     youtube: "https://youtube.com/@urbancruiselko",
     twitter: "https://twitter.com/urbancruiselko",
   },

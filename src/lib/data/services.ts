@@ -1,4 +1,4 @@
-import { Car, Building2, Heart, Crown, type LucideIcon } from "lucide-react";
+import { Car, Building2, Heart, Crown, Plane, type LucideIcon } from "lucide-react";
 
 export interface ServiceFeature {
   title: string;
@@ -7,7 +7,7 @@ export interface ServiceFeature {
 
 export interface ServiceItem {
   slug: string;
-  navKey: "bookTaxi" | "corporateCarRental" | "weddingCarRental" | "luxuryCarRental";
+  navKey: "bookTaxi" | "corporateCarRental" | "weddingCarRental" | "luxuryCarRental" | "airportPickDrop";
   icon: LucideIcon;
   title: string;
   subtitle: string;
@@ -83,6 +83,23 @@ export const services: ServiceItem[] = [
       { title: "Professional Chauffeurs", desc: "Courteous, trained drivers who know the city well." },
       { title: "Doorstep Pick-up", desc: "Your chauffeur waits at your exact pick-up point, on time." },
       { title: "Special Occasions", desc: "Ideal for airport arrivals, anniversaries and VIP events." },
+    ],
+  },
+  {
+    slug: "airport-pick-drop",
+    navKey: "airportPickDrop",
+    icon: Plane,
+    title: "Airport Pick & Drop",
+    subtitle: "On-time transfers to and from Lucknow airport",
+    description:
+      "Flight delays happen — our drivers track your flight and adjust pick-up times automatically, so you're never left waiting at the terminal. Comfortable, air-conditioned cars for smooth airport transfers, any hour of the day.",
+    heroImage:
+      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1600&auto=format&fit=crop",
+    features: [
+      { title: "Flight Tracking", desc: "We monitor your flight status and adjust pick-up time automatically." },
+      { title: "Meet & Greet", desc: "Your driver waits at arrivals with a name board, ready to assist." },
+      { title: "Fixed Fares", desc: "One flat price for the transfer — no meter, no surprises." },
+      { title: "24-Hour Service", desc: "Early morning or late night flights — we're always available." },
     ],
   },
 ];
