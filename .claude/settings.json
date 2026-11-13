@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(taskkill //PID 6188 //F)",
+      "Bash(curl -s -o /dev/null -w \"old URL \\(should 404\\): %{http_code}\\\\n\" http://localhost:3000/packages/varanasi-ganga-darshan-1n2d)",
+      "Bash(curl -s -o /dev/null -w \"new URL \\(should 200\\): %{http_code}\\\\n\" http://localhost:3000/packages/varanasi-ganga-darshan)",
+      "Bash(curl -s http://localhost:3000/packages/varanasi-ganga-darshan)",
+      "Bash(curl -s -o /dev/null -w \"ayodhya-ram-mandir-tour: %{http_code}\\\\n\" http://localhost:3000/packages/ayodhya-ram-mandir-tour)",
+      "Bash(curl -s -o /dev/null -w \"manali-snow-trip: %{http_code}\\\\n\" http://localhost:3000/packages/manali-snow-trip)",
+      "Bash(curl -s -o /dev/null -w \"kerala-backwaters-munnar: %{http_code}\\\\n\" http://localhost:3000/packages/kerala-backwaters-munnar)"
+    ]
+  }
+}
