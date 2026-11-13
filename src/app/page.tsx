@@ -24,6 +24,8 @@ import {
   fetchSiteStats,
 } from "@/lib/api";
 
+
+
 export default async function Home() {
   const [packages, posts, images, destinations, testimonials, faqs, siteStats] = await Promise.all([
     fetchFeaturedPackages(),
@@ -42,6 +44,8 @@ export default async function Home() {
   });
 
   return (
+
+    
     <>
       <HeroSection />
       <QuickBookSection />
