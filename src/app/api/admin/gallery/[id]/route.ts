@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/server/db";
 import { Gallery, GALLERY_CATEGORIES } from "@/lib/server/models/Gallery";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
 import { deleteResource } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 const updateSchema = z.object({
   alt: z.string().trim().optional(),
@@ -23,6 +24,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const data = updateSchema.parse(await request.json());
     const item = await Gallery.findByIdAndUpdate(id, data, { new: true, runValidators: true });
     if (!item) throw ApiError.notFound("Gallery item not found");
+    revalidatePublicSite();
 
     return ok(item, "Gallery item updated");
   } catch (err) {
@@ -41,6 +43,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
     if (item.publicId) await deleteResource(item.publicId);
     await item.deleteOne();
+    revalidatePublicSite();
 
     return ok(null, "Gallery item deleted");
   } catch (err) {

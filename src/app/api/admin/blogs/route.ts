@@ -5,6 +5,7 @@ import { Blog, BLOG_CATEGORIES } from "@/lib/server/models/Blog";
 import { requireAdmin, paginated, created, fail, parsePagination, buildSearch } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, fileToBuffer, uploadBlogImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,7 +42,7 @@ const createBlogSchema = z.object({
   categoryHi: z.string().trim().optional(),
   tags: z.array(z.string().trim().toLowerCase()).default([]),
   readTime: z.coerce.number().int().min(1).default(5),
-  status: z.enum(["draft", "published", "scheduled"]).default("draft"),
+  status: z.enum(["draft", "published", "scheduled"]).default("published"),
   scheduledAt: z.coerce.date().optional(),
   seoTitle: z.string().max(160).optional(),
   seoDescription: z.string().max(320).optional(),
@@ -75,6 +76,7 @@ export async function POST(request: NextRequest) {
       author: admin._id,
     });
 
+    revalidatePublicSite();
     return created(blog, "Blog post created");
   } catch (err) {
     return fail(err);

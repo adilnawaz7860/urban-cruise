@@ -3,6 +3,7 @@ import { z } from "zod";
 import { connectDB } from "@/lib/server/db";
 import { Faq } from "@/lib/server/models/Faq";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 const updateSchema = z.object({
   question: z.string().trim().min(1).max(300).optional(),
@@ -22,6 +23,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const data = updateSchema.parse(await request.json());
     const item = await Faq.findByIdAndUpdate(id, data, { new: true, runValidators: true });
     if (!item) throw ApiError.notFound("FAQ not found");
+    revalidatePublicSite();
 
     return ok(item, "FAQ updated");
   } catch (err) {
@@ -37,6 +39,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
     const item = await Faq.findByIdAndDelete(id);
     if (!item) throw ApiError.notFound("FAQ not found");
+    revalidatePublicSite();
 
     return ok(null, "FAQ deleted");
   } catch (err) {

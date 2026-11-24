@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/server/db";
 import { Gallery, GALLERY_CATEGORIES, type GalleryCategory } from "@/lib/server/models/Gallery";
 import { requireAdmin, ok, created, fail, ApiError } from "@/lib/server/api-helpers";
 import { assertValidImage, fileToBuffer, uploadGalleryImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET() {
   try {
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
       created_.push(item);
     }
 
+    revalidatePublicSite();
     return created(created_, "Images uploaded");
   } catch (err) {
     return fail(err);

@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/server/db";
 import { Testimonial } from "@/lib/server/models/Testimonial";
 import { requireAdmin, ok, created, fail } from "@/lib/server/api-helpers";
 import { assertValidImage, fileToBuffer, uploadAvatar } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET() {
   try {
@@ -26,7 +27,7 @@ const createSchema = z.object({
   tripName: z.string().trim().optional(),
   tripNameHi: z.string().trim().optional(),
   isVideo: z.coerce.boolean().optional(),
-  isPublished: z.coerce.boolean().optional(),
+  isPublished: z.coerce.boolean().default(true),
   isFeatured: z.coerce.boolean().optional(),
   sortOrder: z.coerce.number().int().optional(),
 });
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const item = await Testimonial.create({ ...data, avatar });
+    revalidatePublicSite();
     return created(item, "Testimonial created");
   } catch (err) {
     return fail(err);

@@ -59,7 +59,7 @@ const EMPTY: PackageFormValues = {
   itinerary: [],
   faqs: [],
   categories: ["domestic"],
-  status: "draft",
+  status: "published",
   featured: false,
   bestSeller: false,
 };

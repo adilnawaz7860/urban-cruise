@@ -5,6 +5,7 @@ import { Package, PACKAGE_CATEGORIES } from "@/lib/server/models/Package";
 import { requireAdmin, paginated, created, fail, parsePagination, buildSearch } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, fileToBuffer, uploadPackageImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET(request: NextRequest) {
   try {
@@ -64,7 +65,7 @@ const createPackageSchema = z.object({
   reviewCount: z.coerce.number().int().min(0).optional(),
   featured: z.coerce.boolean().optional(),
   bestSeller: z.coerce.boolean().optional(),
-  status: z.enum(["draft", "published"]).default("draft"),
+  status: z.enum(["draft", "published"]).default("published"),
   seoTitle: z.string().max(160).optional(),
   seoDescription: z.string().max(320).optional(),
 });
@@ -111,6 +112,7 @@ export async function POST(request: NextRequest) {
       createdBy: admin._id,
     });
 
+    revalidatePublicSite();
     return created(pkg, "Package created");
   } catch (err) {
     return fail(err);

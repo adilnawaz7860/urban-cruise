@@ -5,6 +5,7 @@ import { Package, PACKAGE_CATEGORIES } from "@/lib/server/models/Package";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, deleteResource, fileToBuffer, uploadPackageImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -100,6 +101,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     await pkg.save();
+    revalidatePublicSite();
     return ok(pkg, "Package updated");
   } catch (err) {
     return fail(err);
@@ -121,6 +123,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
     }
 
     await pkg.deleteOne();
+    revalidatePublicSite();
     return ok(null, "Package deleted");
   } catch (err) {
     return fail(err);

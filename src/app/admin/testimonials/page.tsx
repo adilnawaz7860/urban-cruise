@@ -24,7 +24,7 @@ const EMPTY: Testimonial = {
   rating: 5,
   text: "",
   tripName: "",
-  isPublished: false,
+  isPublished: true,
   isFeatured: false,
   sortOrder: 0,
 };

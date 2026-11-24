@@ -5,6 +5,7 @@ import { Destination } from "@/lib/server/models/Destination";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, deleteResource, fileToBuffer, uploadDestinationImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 const updateSchema = z.object({
   name: z.string().trim().min(1).max(150).optional(),
@@ -45,6 +46,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     Object.assign(destination, data);
     await destination.save();
+    revalidatePublicSite();
 
     return ok(destination, "Destination updated");
   } catch (err) {
@@ -63,6 +65,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
     if (destination.image?.publicId) await deleteResource(destination.image.publicId);
     await destination.deleteOne();
+    revalidatePublicSite();
 
     return ok(null, "Destination deleted");
   } catch (err) {

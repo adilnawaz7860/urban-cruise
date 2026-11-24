@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/server/db";
 import { Settings } from "@/lib/server/models/Settings";
 import { requireAdmin, ok, fail } from "@/lib/server/api-helpers";
 import { assertValidImage, deleteResource, fileToBuffer, uploadBranding } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET() {
   try {
@@ -81,6 +82,7 @@ export async function PUT(request: NextRequest) {
     settings.updatedBy = admin._id;
 
     await settings.save();
+    revalidatePublicSite();
     return ok(settings, "Settings updated");
   } catch (err) {
     return fail(err);

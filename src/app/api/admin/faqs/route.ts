@@ -3,6 +3,7 @@ import { z } from "zod";
 import { connectDB } from "@/lib/server/db";
 import { Faq } from "@/lib/server/models/Faq";
 import { requireAdmin, ok, created, fail } from "@/lib/server/api-helpers";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET() {
   try {
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const data = createSchema.parse(await request.json());
     const item = await Faq.create(data);
+    revalidatePublicSite();
     return created(item, "FAQ created");
   } catch (err) {
     return fail(err);

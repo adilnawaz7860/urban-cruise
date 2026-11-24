@@ -38,7 +38,7 @@ const EMPTY: BlogFormValues = {
   category: "Travel Guide",
   tags: [],
   readTime: 5,
-  status: "draft",
+  status: "published",
 };
 
 export function BlogForm({ initial }: { initial?: BlogFormValues }) {

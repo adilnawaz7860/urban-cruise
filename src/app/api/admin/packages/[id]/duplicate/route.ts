@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/server/db";
 import { Package } from "@/lib/server/models/Package";
 import { requireAdmin, created, fail, ApiError } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -27,6 +28,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
       createdBy: admin._id,
     });
 
+    revalidatePublicSite();
     return created(duplicate, "Package duplicated");
   } catch (err) {
     return fail(err);

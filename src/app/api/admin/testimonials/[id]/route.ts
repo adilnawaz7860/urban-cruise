@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/server/db";
 import { Testimonial } from "@/lib/server/models/Testimonial";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
 import { assertValidImage, deleteResource, fileToBuffer, uploadAvatar } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 const updateSchema = z.object({
   name: z.string().trim().min(1).max(100).optional(),
@@ -42,6 +43,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     Object.assign(testimonial, data);
     await testimonial.save();
+    revalidatePublicSite();
 
     return ok(testimonial, "Testimonial updated");
   } catch (err) {
@@ -60,6 +62,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
     if (testimonial.avatar?.publicId) await deleteResource(testimonial.avatar.publicId);
     await testimonial.deleteOne();
+    revalidatePublicSite();
 
     return ok(null, "Testimonial deleted");
   } catch (err) {

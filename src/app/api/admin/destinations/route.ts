@@ -5,6 +5,7 @@ import { Destination } from "@/lib/server/models/Destination";
 import { requireAdmin, ok, created, fail } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, fileToBuffer, uploadDestinationImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET() {
   try {
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const item = await Destination.create({ ...data, slug, image });
+    revalidatePublicSite();
     return created(item, "Destination created");
   } catch (err) {
     return fail(err);

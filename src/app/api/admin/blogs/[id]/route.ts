@@ -5,6 +5,7 @@ import { Blog, BLOG_CATEGORIES } from "@/lib/server/models/Blog";
 import { requireAdmin, ok, fail, ApiError } from "@/lib/server/api-helpers";
 import { makeUniqueSlug } from "@/lib/server/slug";
 import { assertValidImage, deleteResource, fileToBuffer, uploadBlogImage } from "@/lib/server/cloudinary";
+import { revalidatePublicSite } from "@/lib/server/revalidation";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -64,6 +65,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     Object.assign(blog, data);
     await blog.save();
+    revalidatePublicSite();
 
     return ok(blog, "Blog post updated");
   } catch (err) {
@@ -82,6 +84,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
     if (blog.featuredImage?.publicId) await deleteResource(blog.featuredImage.publicId);
     await blog.deleteOne();
+    revalidatePublicSite();
 
     return ok(null, "Blog post deleted");
   } catch (err) {
